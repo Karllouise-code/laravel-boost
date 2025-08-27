@@ -26,6 +26,12 @@ COPY . .
 # Install PHP dependencies without dev packages and optimize autoloader
 RUN composer install --no-dev --optimize-autoloader
 
+# Make sure the SQLite file exists
+RUN touch database/database.sqlite
+
+# Run migrations
+RUN php artisan migrate --force
+
 # Install Node dependencies and build assets
 RUN npm install && npm run build
 
