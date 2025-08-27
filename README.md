@@ -166,18 +166,6 @@ Color-coded priority badges:
 - **Critical (4)**: Orange
 - **Urgent (5)**: Red
 
-## 📝 API Routes
-
-| Method | URI | Action | Description |
-|--------|-----|--------|-------------|
-| GET | `/todos` | index | Display Kanban board |
-| GET | `/todos/create` | create | Show create form |
-| POST | `/todos` | store | Store new todo |
-| GET | `/todos/{todo}` | show | Show single todo |
-| GET | `/todos/{todo}/edit` | edit | Show edit form |
-| PATCH | `/todos/{todo}` | update | Update todo (including status) |
-| DELETE | `/todos/{todo}` | destroy | Delete todo |
-
 ## 🔧 Development Commands
 
 ```bash
