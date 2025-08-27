@@ -16,6 +16,7 @@ class Todo extends Model
         'completed',
         'priority',
         'due_date',
+        'status',
     ];
 
     protected function casts(): array

@@ -1,24 +1,24 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900 transition-colors duration-300">
         <div class="container mx-auto px-4 py-8 max-w-2xl">
             <!-- Header -->
             <div class="mb-8">
-                <Link :href="route('todos.index')" class="inline-flex items-center text-gray-600 hover:text-gray-800 mb-4 transition-colors">
+                <Link :href="route('todos.index')" class="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white mb-4 transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
                     Back to Todos
                 </Link>
-                <h1 class="text-3xl font-bold text-gray-800">Edit Todo</h1>
-                <p class="text-gray-600 mt-2">Update your task details</p>
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Edit Todo</h1>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Update your task details</p>
             </div>
 
             <!-- Form -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
                 <form @submit.prevent="submit">
                     <!-- Title -->
                     <div class="mb-6">
-                        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Title <span class="text-red-500">*</span>
                         </label>
                         <input
@@ -37,7 +37,7 @@
 
                     <!-- Description -->
                     <div class="mb-6">
-                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Description
                         </label>
                         <textarea
@@ -57,7 +57,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <!-- Priority -->
                         <div>
-                            <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="priority" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Priority
                             </label>
                             <select
@@ -79,7 +79,7 @@
 
                         <!-- Due Date -->
                         <div>
-                            <label for="due_date" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Due Date
                             </label>
                             <input
@@ -96,7 +96,7 @@
 
                         <!-- Completed Status -->
                         <div>
-                            <label for="completed" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="completed" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Status
                             </label>
                             <div class="pt-3">
