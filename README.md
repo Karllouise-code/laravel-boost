@@ -1,61 +1,231 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ✨ My Boosted Todo App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A beautiful, modern todo list application built with Laravel 12, Vue.js 3, and Inertia.js. Stay organized and productive with an aesthetic interface and powerful features.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-green.svg)
+![Inertia.js](https://img.shields.io/badge/Inertia.js-2.x-purple.svg)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.x-blue.svg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Beautiful, Modern UI** - Gradient backgrounds, smooth animations, and responsive design
+- **Complete CRUD Operations** - Create, read, update, and delete todos seamlessly
+- **Priority Management** - 5-level priority system (Low to Urgent) with color-coded badges
+- **Due Date Tracking** - Set due dates with overdue indicators
+- **Smart Filtering** - Filter todos by status (All, Pending, Completed)
+- **Dashboard Statistics** - Real-time overview of your todo statistics
+- **Completion Toggle** - Mark todos as complete/pending with one click
+- **Form Validation** - Comprehensive client and server-side validation
+- **MySQL Database** - Robust data storage with proper relationships
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Tech Stack
 
-## Learning Laravel
+- **Backend**: Laravel 12, PHP 8.2
+- **Frontend**: Vue.js 3, Inertia.js
+- **Styling**: Tailwind CSS 4.0
+- **Database**: MySQL
+- **Build Tool**: Vite
+- **Code Quality**: Laravel Pint
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🚀 Quick Start
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Prerequisites
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.2 or higher
+- Node.js 18 or higher
+- MySQL
+- Composer
+- XAMPP (for local development)
 
-## Laravel Sponsors
+### Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd my-boosted-app
+   ```
 
-### Premium Partners
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+3. **Install JavaScript dependencies**
+   ```bash
+   npm install
+   ```
 
-## Contributing
+4. **Environment Setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. **Configure Database**
+   - Start XAMPP and ensure MySQL is running
+   - Create a database named `my_boosted_app` in phpMyAdmin
+   - Update your `.env` file:
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=my_boosted_app
+     DB_USERNAME=root
+     DB_PASSWORD=
+     ```
 
-## Code of Conduct
+6. **Run Migrations**
+   ```bash
+   php artisan migrate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+7. **Seed Sample Data (Optional)**
+   ```bash
+   php artisan tinker --execute="App\Models\Todo::factory()->count(10)->create();"
+   ```
 
-## Security Vulnerabilities
+8. **Build Assets**
+   ```bash
+   npm run build
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+9. **Start Development Server**
+   ```bash
+   php artisan serve
+   ```
 
-## License
+10. **Visit your application**
+    ```
+    http://127.0.0.1:8000
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🎯 Usage
+
+### Creating Todos
+1. Click the "Add New Todo" button
+2. Fill in the title, description (optional), priority, and due date
+3. Click "Create Todo"
+
+### Managing Todos
+- **Complete/Uncomplete**: Click the checkbox next to any todo
+- **Edit**: Click the edit icon on any todo card
+- **Delete**: Click the delete icon and confirm
+- **View Details**: Click on any todo to see full details
+
+### Filtering
+Use the filter tabs to view:
+- **All**: All todos
+- **Pending**: Incomplete todos
+- **Completed**: Finished todos
+
+## 📁 Project Structure
+
+```
+my-boosted-app/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── TodoController.php
+│   │   ├── Middleware/
+│   │   │   └── HandleInertiaRequests.php
+│   │   └── Requests/
+│   │       ├── StoreTodoRequest.php
+│   │       └── UpdateTodoRequest.php
+│   └── Models/
+│       └── Todo.php
+├── database/
+│   ├── factories/
+│   │   └── TodoFactory.php
+│   └── migrations/
+│       └── *_create_todos_table.php
+├── resources/
+│   ├── js/
+│   │   ├── Components/
+│   │   │   └── TodoCard.vue
+│   │   └── Pages/
+│   │       └── Todos/
+│   │           ├── Index.vue
+│   │           ├── Create.vue
+│   │           ├── Edit.vue
+│   │           └── Show.vue
+│   └── views/
+│       └── app.blade.php
+└── routes/
+    └── web.php
+```
+
+## 🗃️ Database Schema
+
+### Todos Table
+- `id` - Primary key
+- `title` - Todo title (required)
+- `description` - Todo description (optional)
+- `completed` - Completion status (boolean)
+- `priority` - Priority level (1-5)
+- `due_date` - Due date (optional)
+- `created_at` - Creation timestamp
+- `updated_at` - Last update timestamp
+
+## 🎨 UI Components
+
+### TodoCard Component
+- Displays individual todo items
+- Handles completion toggle
+- Shows priority badges and due dates
+- Provides edit and delete actions
+
+### Dashboard
+- Statistics overview
+- Filter tabs
+- Action buttons
+- Empty state handling
+
+## 📝 API Routes
+
+| Method | URI | Action | Description |
+|--------|-----|--------|-------------|
+| GET | `/todos` | index | Display all todos |
+| GET | `/todos/create` | create | Show create form |
+| POST | `/todos` | store | Store new todo |
+| GET | `/todos/{todo}` | show | Show single todo |
+| GET | `/todos/{todo}/edit` | edit | Show edit form |
+| PATCH | `/todos/{todo}` | update | Update todo |
+| DELETE | `/todos/{todo}` | destroy | Delete todo |
+
+## 🔧 Development Commands
+
+```bash
+# Start development server
+php artisan serve
+
+# Build assets for development
+npm run dev
+
+# Build assets for production
+npm run build
+
+# Run code formatting
+vendor/bin/pint
+
+# Generate routes for JavaScript
+php artisan ziggy:generate
+
+# Run migrations
+php artisan migrate
+
+# Fresh migration with sample data
+php artisan migrate:fresh --seed
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run code formatting: `vendor/bin/pint`
+5. Submit a pull request
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

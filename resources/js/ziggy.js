@@ -1,0 +1,5 @@
+const Ziggy = {"url":"http:\/\/localhost","port":null,"defaults":{},"routes":{"boost.browser-logs":{"uri":"_boost\/browser-logs","methods":["POST"]},"todos.index":{"uri":"todos","methods":["GET","HEAD"]},"todos.create":{"uri":"todos\/create","methods":["GET","HEAD"]},"todos.store":{"uri":"todos","methods":["POST"]},"todos.show":{"uri":"todos\/{todo}","methods":["GET","HEAD"],"parameters":["todo"],"bindings":{"todo":"id"}},"todos.edit":{"uri":"todos\/{todo}\/edit","methods":["GET","HEAD"],"parameters":["todo"],"bindings":{"todo":"id"}},"todos.update":{"uri":"todos\/{todo}","methods":["PUT","PATCH"],"parameters":["todo"],"bindings":{"todo":"id"}},"todos.destroy":{"uri":"todos\/{todo}","methods":["DELETE"],"parameters":["todo"],"bindings":{"todo":"id"}},"storage.local":{"uri":"storage\/{path}","methods":["GET","HEAD"],"wheres":{"path":".*"},"parameters":["path"]}}};
+if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
+  Object.assign(Ziggy.routes, window.Ziggy.routes);
+}
+export { Ziggy };
