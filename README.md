@@ -1,6 +1,6 @@
 # ✨ My Boosted Todo App
 
-A beautiful, modern todo list application built with Laravel 12, Vue.js 3, and Inertia.js. Stay organized and productive with an aesthetic interface and powerful features.
+A beautiful, modern Kanban board todo application built with Laravel 12, Vue.js 3, and Inertia.js. Stay organized and productive with an intuitive drag-and-drop interface and powerful project management features.
 
 ![Laravel](https://img.shields.io/badge/Laravel-12.x-red.svg)
 ![Vue.js](https://img.shields.io/badge/Vue.js-3.x-green.svg)
@@ -9,13 +9,14 @@ A beautiful, modern todo list application built with Laravel 12, Vue.js 3, and I
 
 ## ✨ Features
 
+- **Kanban Board Interface** - Visual workflow management with three columns: To Do, In Progress, Done
+- **Drag & Drop Functionality** - Seamlessly move tasks between columns with intuitive drag-and-drop
 - **Beautiful, Modern UI** - Gradient backgrounds, smooth animations, and responsive design
 - **Complete CRUD Operations** - Create, read, update, and delete todos seamlessly
 - **Priority Management** - 5-level priority system (Low to Urgent) with color-coded badges
 - **Due Date Tracking** - Set due dates with overdue indicators
-- **Smart Filtering** - Filter todos by status (All, Pending, Completed)
-- **Dashboard Statistics** - Real-time overview of your todo statistics
-- **Completion Toggle** - Mark todos as complete/pending with one click
+- **Status Management** - Automatic status updates when moving between columns
+- **Dashboard Statistics** - Real-time overview of your todo statistics across all columns
 - **Form Validation** - Comprehensive client and server-side validation
 - **MySQL Database** - Robust data storage with proper relationships
 
@@ -102,58 +103,35 @@ A beautiful, modern todo list application built with Laravel 12, Vue.js 3, and I
 
 ## 🎯 Usage
 
-### Creating Todos
-1. Click the "Add New Todo" button
-2. Fill in the title, description (optional), priority, and due date
-3. Click "Create Todo"
+### Kanban Board Workflow
+
+The application features a three-column Kanban board:
+- **To Do**: New tasks and items that haven't been started
+- **In Progress**: Tasks currently being worked on
+- **Done**: Completed tasks
 
 ### Managing Todos
-- **Complete/Uncomplete**: Click the checkbox next to any todo
-- **Edit**: Click the edit icon on any todo card
-- **Delete**: Click the delete icon and confirm
-- **View Details**: Click on any todo to see full details
 
-### Filtering
-Use the filter tabs to view:
-- **All**: All todos
-- **Pending**: Incomplete todos
-- **Completed**: Finished todos
+#### Creating Todos
+1. Click the "Add New Todo" button
+2. Fill in the title, description (optional), priority, and due date
+3. New todos automatically start in the "To Do" column
 
-## 📁 Project Structure
+#### Moving Tasks
+- **Drag & Drop**: Simply drag any todo card from one column to another
+- **Status Updates**: Tasks automatically update their status based on the column they're moved to
 
-```
-my-boosted-app/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   └── TodoController.php
-│   │   ├── Middleware/
-│   │   │   └── HandleInertiaRequests.php
-│   │   └── Requests/
-│   │       ├── StoreTodoRequest.php
-│   │       └── UpdateTodoRequest.php
-│   └── Models/
-│       └── Todo.php
-├── database/
-│   ├── factories/
-│   │   └── TodoFactory.php
-│   └── migrations/
-│       └── *_create_todos_table.php
-├── resources/
-│   ├── js/
-│   │   ├── Components/
-│   │   │   └── TodoCard.vue
-│   │   └── Pages/
-│   │       └── Todos/
-│   │           ├── Index.vue
-│   │           ├── Create.vue
-│   │           ├── Edit.vue
-│   │           └── Show.vue
-│   └── views/
-│       └── app.blade.php
-└── routes/
-    └── web.php
-```
+#### Other Actions
+- **Edit**: Click the edit icon on any todo card to modify details
+- **Delete**: Click the delete icon and confirm removal
+- **View Details**: Click on any todo to see full information
+
+### Dashboard Statistics
+View real-time statistics showing:
+- Total number of todos in each column
+- Overdue tasks
+- Priority distribution
+- Completion rates
 
 ## 🗃️ Database Schema
 
@@ -161,36 +139,43 @@ my-boosted-app/
 - `id` - Primary key
 - `title` - Todo title (required)
 - `description` - Todo description (optional)
-- `completed` - Completion status (boolean)
+- `status` - Current status (todo, in_progress, done)
 - `priority` - Priority level (1-5)
 - `due_date` - Due date (optional)
 - `created_at` - Creation timestamp
 - `updated_at` - Last update timestamp
 
-## 🎨 UI Components
+## 🎨 Key Features
 
-### TodoCard Component
-- Displays individual todo items
-- Handles completion toggle
-- Shows priority badges and due dates
-- Provides edit and delete actions
+### Drag & Drop Interface
+- Smooth animations during drag operations
+- Visual feedback when hovering over drop zones
+- Automatic status updates when dropped in different columns
+- Touch-friendly for mobile devices
 
-### Dashboard
-- Statistics overview
-- Filter tabs
-- Action buttons
-- Empty state handling
+### Status Management
+- **To Do**: Initial state for new tasks
+- **In Progress**: Active tasks being worked on
+- **Done**: Completed tasks with visual indicators
+
+### Priority System
+Color-coded priority badges:
+- **Low (1)**: Gray
+- **Medium (2)**: Blue  
+- **High (3)**: Yellow
+- **Critical (4)**: Orange
+- **Urgent (5)**: Red
 
 ## 📝 API Routes
 
 | Method | URI | Action | Description |
 |--------|-----|--------|-------------|
-| GET | `/todos` | index | Display all todos |
+| GET | `/todos` | index | Display Kanban board |
 | GET | `/todos/create` | create | Show create form |
 | POST | `/todos` | store | Store new todo |
 | GET | `/todos/{todo}` | show | Show single todo |
 | GET | `/todos/{todo}/edit` | edit | Show edit form |
-| PATCH | `/todos/{todo}` | update | Update todo |
+| PATCH | `/todos/{todo}` | update | Update todo (including status) |
 | DELETE | `/todos/{todo}` | destroy | Delete todo |
 
 ## 🔧 Development Commands
