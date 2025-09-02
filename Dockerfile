@@ -1,10 +1,9 @@
-# Use official PHP CLI image
+# Use PHP 8.2
 FROM php:8.2-cli
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies
+# Install dependencies
 RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     libpng-dev \
@@ -23,20 +22,20 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy project files
 COPY . .
 
-# Install PHP dependencies without dev packages and optimize autoloader
+# Install PHP deps
 RUN composer install --no-dev --optimize-autoloader
 
-# Make sure the SQLite file exists
+# Ensure SQLite exists
 RUN touch database/database.sqlite
 
-# Run migrations
+# Run migrations during build
+# (⚠️ You might want to run these in CMD or entrypoint instead)
 RUN php artisan migrate --force
 
-# Install Node dependencies and build assets
+# Build frontend assets
 RUN npm install && npm run build
 
-# Expose the port Render will use
 EXPOSE 8080
 
-# Start Laravel built-in server
-CMD php -S 0.0.0.0:8080 -t public
+# Start Laravel
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
