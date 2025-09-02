@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-BN1f1rIS.css",
+    "file": "assets/app-Y6H_GJCD.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -8,7 +8,7 @@
     ]
   },
   "resources/js/Pages/Todos/Create.vue": {
-    "file": "assets/Create-SyvMGMCi.js",
+    "file": "assets/Create-TJpOYsQ0.js",
     "name": "Create",
     "src": "resources/js/Pages/Todos/Create.vue",
     "isDynamicEntry": true,
@@ -17,7 +17,7 @@
     ]
   },
   "resources/js/Pages/Todos/Edit.vue": {
-    "file": "assets/Edit-FXrx9_LZ.js",
+    "file": "assets/Edit-NpPtK4xo.js",
     "name": "Edit",
     "src": "resources/js/Pages/Todos/Edit.vue",
     "isDynamicEntry": true,
@@ -26,7 +26,7 @@
     ]
   },
   "resources/js/Pages/Todos/Index.vue": {
-    "file": "assets/Index-CTRRTN5V.js",
+    "file": "assets/Index-DB1ma5r8.js",
     "name": "Index",
     "src": "resources/js/Pages/Todos/Index.vue",
     "isDynamicEntry": true,
@@ -38,7 +38,7 @@
     ]
   },
   "resources/js/Pages/Todos/Show.vue": {
-    "file": "assets/Show-B01NMKiu.js",
+    "file": "assets/Show-g6PqxP0C.js",
     "name": "Show",
     "src": "resources/js/Pages/Todos/Show.vue",
     "isDynamicEntry": true,
@@ -47,7 +47,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CnW6OCWD.js",
+    "file": "assets/app-CWbZPd7e.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
