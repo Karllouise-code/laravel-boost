@@ -15,6 +15,12 @@
                             </svg>
                             Add Todo
                         </Link>
+                        <a href="/download-sqlite" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 dark:from-green-600 dark:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:from-green-600 hover:to-teal-700 dark:hover:from-green-700 dark:hover:to-teal-800 transform hover:scale-105 transition-all duration-200 text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
+                            Download SQLite
+                        </a>
                         <ThemeToggle />
                     </div>
                 </div>
