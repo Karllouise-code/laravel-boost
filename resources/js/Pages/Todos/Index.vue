@@ -1,22 +1,25 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900 transition-colors duration-300">
+    <div class="min-h-screen transition-colors duration-300" style="background:var(--color-bg);">
         <div class="container mx-auto px-4 py-8">
-            <!-- Header with Theme Toggle -->
             <div class="mb-8">
                 <div class="flex justify-between items-start mb-6">
                     <div class="text-center flex-1">
-                        <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-2">📋 Todo Board</h1>
-                        <p class="text-gray-600 dark:text-gray-300">Drag and drop to organize your tasks</p>
+                        <h1 class="text-4xl font-bold mb-2" style="color:var(--color-text-primary);">📋 Todo Board</h1>
+                        <p style="color:var(--color-text-secondary);">Drag and drop to organize your tasks</p>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <Link :href="route('todos.create')" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-600 dark:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 dark:hover:from-blue-700 dark:hover:to-purple-800 transform hover:scale-105 transition-all duration-200 text-sm">
+                        <Link :href="route('todos.create')"
+                            class="inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-all duration-200 text-sm"
+                            :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)' }">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                             Add Todo
                         </Link>
-                        <a href="/download-sqlite" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 dark:from-green-600 dark:to-teal-700 text-white font-semibold rounded-lg shadow-lg hover:from-green-600 hover:to-teal-700 dark:hover:from-green-700 dark:hover:to-teal-800 transform hover:scale-105 transition-all duration-200 text-sm">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <a href="/download-sqlite"
+                            class="inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-all duration-200 text-sm"
+                            :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)', opacity: 0.8 }">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                             </svg>
                             Download SQLite
@@ -28,35 +31,20 @@
 
             <!-- Success Message -->
             <div v-if="$page.props.flash?.message" class="mb-6">
-                <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg shadow-sm">
+                <div class="px-4 py-3 rounded-lg"
+                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)', border: '1px solid var(--color-accent)' }">
                     {{ $page.props.flash.message }}
                 </div>
             </div>
 
             <!-- Stats Bar -->
             <div class="grid grid-cols-4 gap-4 mb-8">
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
+                <div v-for="stat in stats" :key="stat.label"
+                    class="rounded-lg p-4 border"
+                    :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
                     <div class="text-center">
-                        <div class="text-2xl font-bold text-gray-800 dark:text-white">{{ todos.length }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Total</div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ todoCount }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">To Do</div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">{{ inProgressCount }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">In Progress</div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold text-green-600 dark:text-green-400">{{ doneCount }}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Done</div>
+                        <div class="text-2xl font-bold" style="color:var(--color-text-primary);">{{ stat.count }}</div>
+                        <div class="text-sm" style="color:var(--color-text-muted);">{{ stat.label }}</div>
                     </div>
                 </div>
             </div>
@@ -64,108 +52,75 @@
             <!-- Kanban Board -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- To Do Column -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
+                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
                         <div class="flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-800 dark:text-white flex items-center">
-                                <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
+                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-todo);"></div>
                                 To Do
-                                <span class="ml-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs px-2 py-1 rounded-full">{{ todoTasks.length }}</span>
+                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
+                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ todoTasks.length }}</span>
                             </h3>
                         </div>
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable
-                            v-model="todoTasks"
-                            group="todos"
-                            @change="onDragChange"
-                            item-key="id"
-                            class="space-y-3 min-h-[150px]"
-                            :animation="200"
-                        >
+                        <draggable v-model="todoTasks" group="todos" @change="onDragChange" item-key="id"
+                            class="space-y-3 min-h-[150px]" :animation="200">
                             <template #item="{ element }">
-                                <KanbanCard 
-                                    :todo="element" 
-                                    @delete="deleteTodo"
-                                />
+                                <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
                         </draggable>
-                        <div v-if="todoTasks.length === 0" class="text-center py-8 text-gray-400 dark:text-gray-500">
-                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                            </svg>
+                        <div v-if="todoTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
                             <p class="text-sm">Drop todos here</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- In Progress Column -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
+                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
                         <div class="flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-800 dark:text-white flex items-center">
-                                <div class="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
+                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
+                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-progress);"></div>
                                 In Progress
-                                <span class="ml-2 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs px-2 py-1 rounded-full">{{ inProgressTasks.length }}</span>
+                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
+                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ inProgressTasks.length }}</span>
                             </h3>
                         </div>
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable
-                            v-model="inProgressTasks"
-                            group="todos"
-                            @change="onDragChange"
-                            item-key="id"
-                            class="space-y-3 min-h-[150px]"
-                            :animation="200"
-                        >
+                        <draggable v-model="inProgressTasks" group="todos" @change="onDragChange" item-key="id"
+                            class="space-y-3 min-h-[150px]" :animation="200">
                             <template #item="{ element }">
-                                <KanbanCard 
-                                    :todo="element" 
-                                    @delete="deleteTodo"
-                                />
+                                <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
                         </draggable>
-                        <div v-if="inProgressTasks.length === 0" class="text-center py-8 text-gray-400 dark:text-gray-500">
-                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
+                        <div v-if="inProgressTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
                             <p class="text-sm">Drop todos here</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Done Column -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
+                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
                         <div class="flex items-center justify-between">
-                            <h3 class="font-semibold text-gray-800 dark:text-white flex items-center">
-                                <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
+                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-done);"></div>
                                 Done
-                                <span class="ml-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-1 rounded-full">{{ doneTasks.length }}</span>
+                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
+                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ doneTasks.length }}</span>
                             </h3>
                         </div>
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable
-                            v-model="doneTasks"
-                            group="todos"
-                            @change="onDragChange"
-                            item-key="id"
-                            class="space-y-3 min-h-[150px]"
-                            :animation="200"
-                        >
+                        <draggable v-model="doneTasks" group="todos" @change="onDragChange" item-key="id"
+                            class="space-y-3 min-h-[150px]" :animation="200">
                             <template #item="{ element }">
-                                <KanbanCard 
-                                    :todo="element" 
-                                    @delete="deleteTodo"
-                                />
+                                <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
                         </draggable>
-                        <div v-if="doneTasks.length === 0" class="text-center py-8 text-gray-400 dark:text-gray-500">
-                            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 13l4 4L19 7"></path>
-                            </svg>
+                        <div v-if="doneTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
                             <p class="text-sm">Drop todos here</p>
                         </div>
                     </div>
@@ -195,6 +150,13 @@ const doneTasks = ref(props.todos.filter(todo => todo.status === 'done'));
 const todoCount = computed(() => todoTasks.value.length);
 const inProgressCount = computed(() => inProgressTasks.value.length);
 const doneCount = computed(() => doneTasks.value.length);
+
+const stats = computed(() => [
+    { label: 'Total', count: props.todos.length },
+    { label: 'To Do', count: todoCount.value },
+    { label: 'In Progress', count: inProgressCount.value },
+    { label: 'Done', count: doneCount.value },
+]);
 
 // Handle drag and drop changes
 const onDragChange = (evt) => {
