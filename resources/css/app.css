@@ -11,11 +11,63 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-@variant dark (&:is([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
-
-/* Ensure dark mode works */
-@media (prefers-color-scheme: dark) {
-    :root {
-        color-scheme: dark;
-    }
+/* ============= COFFEE THEME (default) ============= */
+[data-theme="coffee"] {
+    --color-bg: #13161c;
+    --color-surface: #1a1d24;
+    --color-card: #1e2128;
+    --color-border: #282b32;
+    --color-border-hover: #3a3d44;
+    --color-accent: #e6a817;
+    --color-accent-hover: #d49a15;
+    --color-accent-bg: rgba(230, 168, 23, 0.12);
+    --color-text-primary: #e8e6e3;
+    --color-text-secondary: #a0a3ab;
+    --color-text-muted: #787c85;
+    --color-text-dim: #5a5e66;
+    --color-accent-text: #13161c;
+    --color-dot-todo: #e6a817;
+    --color-dot-progress: #e6a817;
+    --color-dot-done: #5a5e66;
 }
+
+/* ============= NES THEME (toggle) ============= */
+[data-theme="nes"] {
+    --color-bg: #1a1a2e;
+    --color-surface: #16213e;
+    --color-card: #0f3460;
+    --color-border: #533483;
+    --color-border-hover: #7c3aed;
+    --color-accent: #e94560;
+    --color-accent-hover: #d63851;
+    --color-accent-bg: rgba(233, 69, 96, 0.15);
+    --color-text-primary: #f5f5f5;
+    --color-text-secondary: #c0c3cb;
+    --color-text-muted: #787c85;
+    --color-text-dim: #5a5e66;
+    --color-accent-text: #f5f5f5;
+    --color-dot-todo: #e94560;
+    --color-dot-progress: #e94560;
+    --color-dot-done: #1a8a1a;
+}
+
+/* ============= UTILITY CLASSES ============= */
+.bg-page { background: var(--color-bg); }
+.bg-surface { background: var(--color-surface); }
+.bg-card { background: var(--color-card); }
+.bg-accent { background: var(--color-accent); }
+.bg-accent-subtle { background: var(--color-accent-bg); }
+
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-dim { color: var(--color-text-dim); }
+.text-accent { color: var(--color-accent); }
+
+.border-default { border-color: var(--color-border); }
+.border-hover { border-color: var(--color-border-hover); }
+.border-accent { border-color: var(--color-accent); }
+
+.dot-todo { background: var(--color-dot-todo); }
+.dot-progress { background: var(--color-dot-progress); }
+.dot-done { background: var(--color-dot-done); }
