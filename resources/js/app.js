@@ -6,20 +6,18 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-// Initialize dark mode before creating the app
-const initializeDarkMode = () => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
+// Initialize theme before creating the app
+const initializeTheme = () => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'coffee' || saved === 'nes') {
+        document.documentElement.setAttribute('data-theme', saved);
     } else {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'coffee');
     }
 };
 
 // Initialize immediately
-initializeDarkMode();
+initializeTheme();
 
 createInertiaApp({
     title: () => `${appName}`,
