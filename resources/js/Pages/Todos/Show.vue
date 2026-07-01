@@ -33,8 +33,9 @@
                 <div class="mb-6">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
                         :style="{
-                            background: todo.completed ? 'var(--color-accent-bg)' : 'var(--color-accent-bg)',
-                            color: todo.completed ? 'var(--color-accent)' : 'var(--color-accent)',
+                            background: todo.completed ? 'var(--color-accent-bg)' : 'var(--color-text-dim)',
+                            color: todo.completed ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                            border: todo.completed ? 'none' : '1px solid var(--color-border)',
                         }">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                             <path v-if="todo.completed" fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
@@ -147,14 +148,13 @@ const isOverdue = (dueDate) => {
 };
 
 const priorityStyle = (priority) => {
-    const colors = {
-        1: { background: 'var(--color-accent-bg)', color: 'var(--color-text-muted)' },
-        2: { background: 'var(--color-accent-bg)', color: 'var(--color-accent)' },
-        3: { background: 'var(--color-accent-bg)', color: 'var(--color-accent)' },
-        4: { background: 'var(--color-accent-bg)', color: 'var(--color-accent)' },
-        5: { background: 'var(--color-accent-bg)', color: 'var(--color-accent)' },
+    const styles = {
+        2: { background: 'color-mix(in srgb, var(--color-accent) 12%, transparent)', color: 'var(--color-accent)' },
+        3: { background: 'color-mix(in srgb, var(--color-accent) 18%, transparent)', color: 'var(--color-accent)' },
+        4: { background: 'color-mix(in srgb, var(--color-accent) 25%, transparent)', color: 'var(--color-accent)' },
+        5: { background: 'color-mix(in srgb, var(--color-accent) 35%, transparent)', color: 'var(--color-accent)' },
     };
-    return colors[priority] || colors[1];
+    return styles[priority] || styles[2];
 };
 
 const priorityText = (priority) => {

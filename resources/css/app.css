@@ -1,3 +1,4 @@
+@import 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap';
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -9,6 +10,7 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Playfair Display', serif;
 }
 
 /* ============= COFFEE THEME (default) ============= */
@@ -71,3 +73,54 @@
 .dot-todo { background: var(--color-dot-todo); }
 .dot-progress { background: var(--color-dot-progress); }
 .dot-done { background: var(--color-dot-done); }
+
+/* ============= COFFEE THEME HEADINGS ============= */
+[data-theme="coffee"] h1,
+[data-theme="coffee"] h2,
+[data-theme="coffee"] h3,
+[data-theme="coffee"] .font-bold,
+[data-theme="coffee"] .font-semibold {
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+/* ============= NES THEME STYLING ============= */
+[data-theme="nes"] .border,
+[data-theme="nes"] .rounded-xl,
+[data-theme="nes"] .rounded-lg {
+    border-width: 3px;
+}
+
+[data-theme="nes"] .rounded-xl {
+    box-shadow: 4px 4px 0 0 rgba(233, 69, 96, 0.15);
+}
+
+[data-theme="nes"] h1,
+[data-theme="nes"] h2,
+[data-theme="nes"] h3,
+[data-theme="nes"] .font-bold,
+[data-theme="nes"] .font-semibold {
+    font-family: 'Courier New', 'Courier', monospace;
+    letter-spacing: 0.5px;
+}
+
+[data-theme="nes"] .text-xs {
+    font-family: 'Courier New', 'Courier', monospace;
+}
+
+[data-theme="nes"] .rounded-full {
+    border-width: 2px;
+}
+
+[data-theme="nes"] button,
+[data-theme="nes"] a.inline-flex {
+    border-width: 2px !important;
+    border-style: solid !important;
+}
+
+[data-theme="nes"] .rounded-lg {
+    box-shadow: 3px 3px 0 0 rgba(233, 69, 96, 0.12);
+}
+
+/* ============= DARK SCHEME ============= */
+:root { color-scheme: dark; }

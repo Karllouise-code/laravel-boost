@@ -1,28 +1,26 @@
 <template>
     <div class="min-h-screen transition-colors duration-300" style="background:var(--color-bg);">
         <div class="container mx-auto px-4 py-8">
-            <div class="mb-8">
-                <div class="flex justify-between items-start mb-6">
-                    <div class="text-center flex-1">
-                        <h1 class="text-4xl font-bold mb-2" style="color:var(--color-text-primary);">📋 Todo Board</h1>
-                        <p style="color:var(--color-text-secondary);">Drag and drop to organize your tasks</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <Link :href="route('todos.create')"
-                            class="inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-all duration-200 text-sm"
-                            :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)' }">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                            </svg>
-                            Add Todo
-                        </Link>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                <h1 class="text-xl font-bold" style="color:var(--color-text-primary);">Todo Board</h1>
+                <div class="flex items-center justify-between sm:justify-end sm:gap-2">
+                    <Link :href="route('todos.create')"
+                        class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold rounded-lg transition-all duration-200"
+                        :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)' }">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span class="hidden sm:inline">Add</span>
+                        <span class="sm:hidden">+</span>
+                    </Link>
+                    <div class="flex items-center gap-2">
                         <a href="/download-sqlite"
-                            class="inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-all duration-200 text-sm"
+                            class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold rounded-lg transition-all duration-200"
                             :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)', opacity: 0.8 }">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                             </svg>
-                            Download SQLite
+                            <span class="hidden sm:inline">Download</span>
                         </a>
                         <ThemeToggle />
                     </div>
@@ -38,13 +36,13 @@
             </div>
 
             <!-- Stats Bar -->
-            <div class="grid grid-cols-4 gap-4 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                 <div v-for="stat in stats" :key="stat.label"
-                    class="rounded-lg p-4 border"
+                    class="rounded-lg px-3 py-3 sm:px-4 sm:py-4 border"
                     :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
                     <div class="text-center">
-                        <div class="text-2xl font-bold" style="color:var(--color-text-primary);">{{ stat.count }}</div>
-                        <div class="text-sm" style="color:var(--color-text-muted);">{{ stat.label }}</div>
+                        <div class="text-xl sm:text-2xl font-bold" style="color:var(--color-text-primary);">{{ stat.count }}</div>
+                        <div class="text-xs sm:text-sm font-semibold whitespace-nowrap" style="color:var(--color-text-muted);">{{ stat.label }}</div>
                     </div>
                 </div>
             </div>
