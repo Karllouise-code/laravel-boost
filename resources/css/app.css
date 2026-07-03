@@ -122,5 +122,21 @@
     box-shadow: 3px 3px 0 0 rgba(233, 69, 96, 0.12);
 }
 
+/* ============= SONNER TOAST OVERRIDES ============= */
+[data-sonner-toaster][data-sonner-theme='dark'] {
+    --normal-bg: var(--color-surface);
+    --normal-border: var(--color-border);
+    --normal-text: var(--color-text-primary);
+    font-family: inherit;
+}
+
+[data-sonner-toaster][data-sonner-theme='dark'] [data-sonner-toast] {
+    font-family: inherit;
+}
+
+[data-sonner-toaster][data-sonner-theme='dark'] [data-sonner-toast][data-styled='true'] {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 /* ============= DARK SCHEME ============= */
 :root { color-scheme: dark; }

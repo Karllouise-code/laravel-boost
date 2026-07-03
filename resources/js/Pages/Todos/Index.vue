@@ -27,14 +27,6 @@
                 </div>
             </div>
 
-            <!-- Success Message -->
-            <div v-if="$page.props.flash?.message" class="mb-6">
-                <div class="px-4 py-3 rounded-lg"
-                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)', border: '1px solid var(--color-accent)' }">
-                    {{ $page.props.flash.message }}
-                </div>
-            </div>
-
             <!-- Stats Bar -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
                 <div v-for="stat in stats" :key="stat.label"
@@ -132,18 +124,26 @@
             </div>
         </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { computed, ref, watch } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import draggable from 'vuedraggable';
 import KanbanCard from '@/Components/KanbanCard.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
+import { toast } from 'vue-sonner';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     todos: Array,
 });
+
+const page = usePage();
+watch(() => page.props.flash?.message, (msg) => {
+    if (msg) toast.success(msg);
+}, { immediate: true });
 
 // Reactive arrays for each column
 const todoTasks = ref(props.todos.filter(todo => todo.status === 'todo'));
@@ -196,11 +196,17 @@ const updateTodoStatus = (todoId, newStatus) => {
     });
 };
 
-const deleteTodo = (todo) => {
-    if (confirm('Are you sure you want to delete this todo?')) {
+const confirmDialog = ref(null);
+
+const deleteTodo = async (todo) => {
+    const confirmed = await confirmDialog.value?.open({
+        title: 'Delete Todo',
+        message: `Are you sure you want to delete "${todo.title}"?`,
+        confirmText: 'Delete',
+    });
+    if (confirmed) {
         router.delete(route('todos.destroy', todo.id), {
             onSuccess: () => {
-                // Remove from local arrays
                 todoTasks.value = todoTasks.value.filter(t => t.id !== todo.id);
                 inProgressTasks.value = inProgressTasks.value.filter(t => t.id !== todo.id);
                 doneTasks.value = doneTasks.value.filter(t => t.id !== todo.id);

@@ -123,14 +123,23 @@
             </div>
         </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script setup>
-import { Link, router } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     todo: Object,
 });
+
+const page = usePage();
+watch(() => page.props.flash?.message, (msg) => {
+    if (msg) toast.success(msg);
+}, { immediate: true });
 
 const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', {
@@ -174,8 +183,15 @@ const toggleComplete = () => {
     });
 };
 
-const deleteTodo = () => {
-    if (confirm('Are you sure you want to delete this todo?')) {
+const confirmDialog = ref(null);
+
+const deleteTodo = async () => {
+    const confirmed = await confirmDialog.value?.open({
+        title: 'Delete Todo',
+        message: `Are you sure you want to delete "${props.todo.title}"?`,
+        confirmText: 'Delete',
+    });
+    if (confirmed) {
         router.delete(route('todos.destroy', props.todo.id));
     }
 };

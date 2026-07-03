@@ -166,11 +166,18 @@ const props = defineProps({
     todo: Object,
 });
 
+const toDateInputValue = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return '';
+    return d.toISOString().split('T')[0];
+};
+
 const form = useForm({
     title: props.todo.title,
     description: props.todo.description,
     priority: props.todo.priority,
-    due_date: props.todo.due_date,
+    due_date: toDateInputValue(props.todo.due_date),
     completed: props.todo.completed,
 });
 

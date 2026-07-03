@@ -93,10 +93,13 @@
             </div>
         </div>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { Link, router } from '@inertiajs/vue3';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     todo: Object,
@@ -137,8 +140,15 @@ const priorityText = (priority) => {
     return texts[priority] || 'Low';
 };
 
-const deleteTodo = () => {
-    if (confirm('Are you sure you want to delete this todo?')) {
+const confirmDialog = ref(null);
+
+const deleteTodo = async () => {
+    const confirmed = await confirmDialog.value?.open({
+        title: 'Delete Todo',
+        message: `Are you sure you want to delete "${props.todo.title}"?`,
+        confirmText: 'Delete',
+    });
+    if (confirmed) {
         router.delete(route('todos.destroy', props.todo.id));
     }
 };
