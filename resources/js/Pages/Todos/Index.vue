@@ -211,6 +211,14 @@ const deleteTodo = (todo) => {
 </script>
 
 <style>
+[draggable],
+.drag-ghost,
+.dragging,
+.drag-fallback {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 .drag-ghost {
     outline: 2px dashed var(--color-accent, #6366f1);
     outline-offset: -2px;
@@ -218,10 +226,14 @@ const deleteTodo = (todo) => {
     background: transparent !important;
     border-color: transparent !important;
     box-shadow: none !important;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .dragging {
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.25);
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .drag-fallback {
@@ -229,5 +241,7 @@ const deleteTodo = (todo) => {
     box-shadow: 0 15px 40px -8px rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
     pointer-events: none !important;
+    -webkit-user-select: none;
+    user-select: none;
 }
 </style>
