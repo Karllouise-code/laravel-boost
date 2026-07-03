@@ -2,7 +2,7 @@
     <div class="min-h-screen transition-colors duration-300" style="background:var(--color-bg);">
         <div class="container mx-auto px-4 py-8">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-                <h1 class="text-xl font-bold" style="color:var(--color-text-primary);">Todo Board</h1>
+                <h1 class="text-xl font-bold" style="color:var(--color-text-primary);">NESPRESSO BOARD</h1>
                 <div class="flex items-center justify-between sm:justify-end sm:gap-2">
                     <Link :href="route('todos.create')"
                         class="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold rounded-lg transition-all duration-200"
