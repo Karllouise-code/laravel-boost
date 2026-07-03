@@ -63,7 +63,9 @@
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
                         <draggable v-model="todoTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200">
+                            class="space-y-3 min-h-[150px]" :animation="200"
+                            ghost-class="drag-ghost" drag-class="dragging"
+                            :force-fallback="true" fallback-class="drag-fallback">
                             <template #item="{ element }">
                                 <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
@@ -88,7 +90,9 @@
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
                         <draggable v-model="inProgressTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200">
+                            class="space-y-3 min-h-[150px]" :animation="200"
+                            ghost-class="drag-ghost" drag-class="dragging"
+                            :force-fallback="true" fallback-class="drag-fallback">
                             <template #item="{ element }">
                                 <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
@@ -113,7 +117,9 @@
                     </div>
                     <div class="p-4 space-y-3 min-h-[200px]">
                         <draggable v-model="doneTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200">
+                            class="space-y-3 min-h-[150px]" :animation="200"
+                            ghost-class="drag-ghost" drag-class="dragging"
+                            :force-fallback="true" fallback-class="drag-fallback">
                             <template #item="{ element }">
                                 <KanbanCard :todo="element" @delete="deleteTodo" />
                             </template>
@@ -203,3 +209,25 @@ const deleteTodo = (todo) => {
     }
 };
 </script>
+
+<style>
+.drag-ghost {
+    outline: 2px dashed var(--color-accent, #6366f1);
+    outline-offset: -2px;
+    border-radius: 0.5rem;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.dragging {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.25);
+}
+
+.drag-fallback {
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px -8px rgba(0, 0, 0, 0.3);
+    border-radius: 0.5rem;
+    pointer-events: none !important;
+}
+</style>

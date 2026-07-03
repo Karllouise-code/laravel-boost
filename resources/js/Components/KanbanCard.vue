@@ -1,6 +1,6 @@
 <template>
     <div
-        class="rounded-lg p-4 border transition-all duration-200 cursor-grab active:cursor-grabbing group"
+        class="rounded-lg p-4 border transition-colors duration-200 cursor-grab active:cursor-grabbing group"
         :style="{
             background: 'var(--color-card)',
             borderColor: isOverdue && !todo.completed ? 'var(--color-accent)' : 'var(--color-border)',
