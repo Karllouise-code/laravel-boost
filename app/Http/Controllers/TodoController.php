@@ -41,7 +41,7 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request): RedirectResponse
     {
-        Todo::create($request->validated());
+        $request->user()->todos()->create($request->validated());
 
         return redirect()
             ->route('todos.index')
@@ -53,6 +53,10 @@ class TodoController extends Controller
      */
     public function show(Todo $todo): Response
     {
+        if ($todo->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         return Inertia::render('Todos/Show', [
             'todo' => $todo,
         ]);
@@ -63,6 +67,10 @@ class TodoController extends Controller
      */
     public function edit(Todo $todo): Response
     {
+        if ($todo->user_id !== auth()->id()) {
+            abort(403);
+        }
+
         return Inertia::render('Todos/Edit', [
             'todo' => $todo,
         ]);

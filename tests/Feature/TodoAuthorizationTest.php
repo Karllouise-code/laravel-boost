@@ -72,4 +72,16 @@ class TodoAuthorizationTest extends TestCase
         $response->assertRedirect(route('todos.index'));
         $this->assertEquals('Updated', $todo->fresh()->title);
     }
+
+    public function test_user_can_delete_own_todo()
+    {
+        $user = User::factory()->create();
+        $todo = Todo::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)
+            ->delete(route('todos.destroy', $todo));
+
+        $response->assertRedirect(route('todos.index'));
+        $this->assertModelMissing($todo);
+    }
 }

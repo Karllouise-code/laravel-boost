@@ -30,11 +30,4 @@ class StoreTodoRequest extends FormRequest
             'status' => ['in:todo,in_progress,done'],
         ];
     }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'user_id' => $this->user()->id,
-        ]);
-    }
 }

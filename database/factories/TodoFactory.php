@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class TodoFactory extends Factory
             'completed' => fake()->boolean(30),
             'priority' => fake()->numberBetween(1, 5),
             'due_date' => fake()->optional(0.6)->dateTimeBetween('today', '+30 days'),
+            'user_id' => User::factory(),
         ];
     }
 }
