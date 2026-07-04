@@ -17,7 +17,7 @@
 | `git add -N`, `git add -p` only | Stage files for review — never commit, push, or create PRs. User does all git writes. |
 
 ## Architecture
-- **No authentication** — `StoreTodoRequest` and `UpdateTodoRequest` both return `authorize(): true`. No auth middleware on routes.
+- **Authentication via Laravel Breeze** — Login, register, password reset, email verification scaffolded. Auth middleware on todo routes. `StoreTodoRequest` still returns `authorize(): true` (any logged-in user can create). `UpdateTodoRequest` checks ownership via `user_id`.
 - **No custom Artisan commands** — `app/Console/Commands/` is empty
 - **Wiring file** is `bootstrap/app.php` (Laravel 11+ style), not `app/Http/Kernel.php`
 - **Only custom middleware**: `HandleInertiaRequests` (appended to web group in `bootstrap/app.php`)
