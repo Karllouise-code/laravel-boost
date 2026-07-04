@@ -3,6 +3,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import PasswordInput from '@/Components/PasswordInput.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
@@ -59,9 +60,8 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />
 
-                <TextInput
+                <PasswordInput
                     id="password"
-                    type="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
@@ -77,9 +77,8 @@ const submit = () => {
                     value="Confirm Password"
                 />
 
-                <TextInput
+                <PasswordInput
                     id="password_confirmation"
-                    type="password"
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
@@ -95,7 +94,10 @@ const submit = () => {
             <div class="mt-4 flex items-center justify-end">
                 <Link
                     :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    class="rounded-md text-sm underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    style="color: var(--color-text-muted); font-family: var(--font-display);"
+                    @mouseenter="(e) => e.target.style.color = 'var(--color-accent)'"
+                    @mouseleave="(e) => e.target.style.color = 'var(--color-text-muted)'"
                 >
                     Already registered?
                 </Link>

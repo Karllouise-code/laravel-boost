@@ -5,8 +5,12 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { useDarkMode } from '@/composables/useDarkMode';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+// Initialize theme before mounting app
+useDarkMode().initializeTheme();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

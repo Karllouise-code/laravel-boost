@@ -12,7 +12,7 @@ const props = defineProps({
     },
     contentClasses: {
         type: String,
-        default: 'py-1 bg-white',
+        default: 'py-1',
     },
 });
 
@@ -73,8 +73,9 @@ const open = ref(false);
                 @click="open = false"
             >
                 <div
-                    class="rounded-md ring-1 ring-black ring-opacity-5"
+                    class="rounded-md"
                     :class="contentClasses"
+                    :style="{ background: 'var(--color-card)', border: '1px solid var(--color-border)' }"
                 >
                     <slot name="content" />
                 </div>

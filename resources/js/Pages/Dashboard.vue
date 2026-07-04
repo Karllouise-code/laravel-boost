@@ -9,20 +9,22 @@ import { Head } from '@inertiajs/vue3';
     <AuthenticatedLayout>
         <template #header>
             <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
+                class="text-xl font-semibold leading-tight"
+                style="color: var(--color-text-primary);"
             >
                 Dashboard
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
-                    <div class="p-6 text-gray-900">
+        <div class="container mx-auto px-4 py-8">
+            <div
+                class="overflow-hidden rounded-xl border"
+                :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }"
+            >
+                <div class="p-6">
+                    <p class="text-base font-semibold" style="color: var(--color-text-secondary);">
                         You're logged in!
-                    </div>
+                    </p>
                 </div>
             </div>
         </div>

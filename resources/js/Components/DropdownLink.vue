@@ -12,7 +12,10 @@ defineProps({
 <template>
     <Link
         :href="href"
-        class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+        class="block w-full px-4 py-2 text-start text-sm leading-5 transition duration-150 ease-in-out focus:outline-none"
+        :style="{ color: 'var(--color-text-primary)' }"
+        @mouseenter="(e) => e.target.style.background = 'var(--color-accent-bg)'"
+        @mouseleave="(e) => e.target.style.background = 'transparent'"
     >
         <slot />
     </Link>
