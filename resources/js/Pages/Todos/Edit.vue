@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen transition-colors duration-300" style="background:var(--color-bg);">
+    <AuthenticatedLayout>
         <div class="container mx-auto px-4 py-8 max-w-2xl">
             <div class="mb-8">
                 <Link :href="route('todos.index')" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
@@ -156,10 +156,11 @@
                 </form>
             </div>
         </div>
-    </div>
+    </AuthenticatedLayout>
 </template>
 
 <script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({

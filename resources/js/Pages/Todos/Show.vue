@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen transition-colors duration-300" style="background:var(--color-bg);">
+    <AuthenticatedLayout>
         <div class="container mx-auto px-4 py-8 max-w-2xl">
             <div class="mb-8">
                 <Link :href="route('todos.index')" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
@@ -122,11 +122,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </AuthenticatedLayout>
     <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script setup>
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { ref, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
