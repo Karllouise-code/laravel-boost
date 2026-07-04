@@ -21,35 +21,37 @@ defineProps({
     <AuthenticatedLayout>
         <template #header>
             <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
+                class="text-xl font-semibold leading-tight"
+                style="color: var(--color-text-primary);"
             >
                 Profile
             </h2>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
-                >
-                    <UpdateProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        class="max-w-xl"
-                    />
-                </div>
+        <div class="container mx-auto px-4 py-8 space-y-6">
+            <div
+                class="rounded-xl border p-4 sm:p-8"
+                :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }"
+            >
+                <UpdateProfileInformationForm
+                    :must-verify-email="mustVerifyEmail"
+                    :status="status"
+                    class="max-w-xl"
+                />
+            </div>
 
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
-                >
-                    <UpdatePasswordForm class="max-w-xl" />
-                </div>
+            <div
+                class="rounded-xl border p-4 sm:p-8"
+                :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }"
+            >
+                <UpdatePasswordForm class="max-w-xl" />
+            </div>
 
-                <div
-                    class="bg-white p-4 shadow sm:rounded-lg sm:p-8"
-                >
-                    <DeleteUserForm class="max-w-xl" />
-                </div>
+            <div
+                class="rounded-xl border p-4 sm:p-8"
+                :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }"
+            >
+                <DeleteUserForm class="max-w-xl" />
             </div>
         </div>
     </AuthenticatedLayout>

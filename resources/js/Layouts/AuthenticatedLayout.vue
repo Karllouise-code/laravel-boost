@@ -59,7 +59,7 @@ const showingNavigationDropdown = ref(false);
                                         <span class="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center rounded-md border px-3 py-2 text-sm font-medium leading-4 transition duration-150 ease-in-out focus:outline-none"
+                                                class="inline-flex items-center rounded-md border px-3 py-2 text-sm font-semibold leading-4 transition duration-150 ease-in-out focus:outline-none"
                                                 :style="{ borderColor: 'var(--color-border)', background: 'var(--color-card)', color: 'var(--color-text-secondary)' }"
                                             >
                                                 {{ $page.props.auth.user.name }}
