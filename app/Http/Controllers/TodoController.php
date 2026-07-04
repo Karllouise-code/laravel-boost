@@ -16,7 +16,7 @@ class TodoController extends Controller
      */
     public function index(): Response
     {
-        $todos = Todo::query()
+        $todos = auth()->user()->todos()
             ->orderBy('priority', 'desc')
             ->orderBy('due_date', 'asc')
             ->orderBy('created_at', 'desc')
