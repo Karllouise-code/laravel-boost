@@ -13,7 +13,11 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
         });
 
-        DB::table('todos')->whereNull('user_id')->update(['user_id' => DB::table('users')->value('id')]);
+        $firstUserId = DB::table('users')->value('id');
+
+        if ($firstUserId) {
+            DB::table('todos')->whereNull('user_id')->update(['user_id' => $firstUserId]);
+        }
     }
 
     public function down(): void

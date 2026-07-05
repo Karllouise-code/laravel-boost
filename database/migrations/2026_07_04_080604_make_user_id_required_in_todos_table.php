@@ -13,7 +13,13 @@ return new class extends Migration
             $defaultUserId = DB::table('users')->orderBy('id')->value('id');
 
             if (! $defaultUserId) {
-                throw new RuntimeException('Cannot make todos.user_id NOT NULL because no users exist.');
+                $defaultUserId = DB::table('users')->insertGetId([
+                    'name' => 'System',
+                    'email' => 'system@localhost',
+                    'password' => bcrypt(Str::random(32)),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
             }
 
             DB::table('todos')
