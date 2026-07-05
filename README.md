@@ -10,7 +10,7 @@ A themed Kanban board todo app with Laravel 12, Inertia.js 2, Vue 3, and Tailwin
 - **Dual Themes** — Coffee (default dark) and NES (retro purple/pink) with CSS variables
 - **Priority System** — 5-level priority with color-coded badges
 - **Due Date Tracking** — Set due dates with overdue indicators
-- **Download SQLite** — Export your local database via the Kanban board
+- **CSV Export** — Download your todos as a CSV file from the Kanban board
 - **Responsive** — Works on desktop and mobile
 
 ## Tech Stack
@@ -134,7 +134,13 @@ DB_PORT=5432
 DB_DATABASE=<db-name>
 DB_USERNAME=<db-user>
 DB_PASSWORD=<db-password>
+APP_URL=https://your-app.onrender.com
 ```
+
+**Notes:**
+- `APP_URL` should be set to your Render app URL to ensure correct asset URLs
+- `bootstrap/app.php` configures trusted proxies (`*`) so Laravel generates `https://` URLs behind Render's proxy
+- Migrations automatically create a System user if orphaned todos exist with no users (for `user_id` NOT NULL constraint)
 
 ## License
 
