@@ -30,8 +30,8 @@ COPY . .
 # Install PHP dependencies without dev packages and optimize autoloader
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node dependencies and build assets
-RUN npm install && npm run build
+# Generate Ziggy JS routes, install Node dependencies, and build assets
+RUN php artisan ziggy:generate && npm install && npm run build
 
 # Expose the port Render will use
 EXPOSE 8080
