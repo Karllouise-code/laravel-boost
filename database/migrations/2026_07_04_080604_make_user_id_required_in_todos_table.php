@@ -9,18 +9,16 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $defaultUserId = DB::table('users')->orderBy('id')->value('id');
-
-        if (! $defaultUserId) {
-            throw new RuntimeException('Cannot make todos.user_id NOT NULL because no users exist.');
-        }
-
-        DB::table('todos')
-            ->whereNull('user_id')
-            ->update(['user_id' => $defaultUserId]);
-
         if (DB::table('todos')->whereNull('user_id')->exists()) {
-            throw new RuntimeException('Some todos still have NULL user_id.');
+            $defaultUserId = DB::table('users')->orderBy('id')->value('id');
+
+            if (! $defaultUserId) {
+                throw new RuntimeException('Cannot make todos.user_id NOT NULL because no users exist.');
+            }
+
+            DB::table('todos')
+                ->whereNull('user_id')
+                ->update(['user_id' => $defaultUserId]);
         }
 
         Schema::table('todos', function (Blueprint $table) {
