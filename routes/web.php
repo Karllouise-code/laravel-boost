@@ -16,8 +16,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/todos/export', [DatabaseController::class, 'export'])->name('todos.export');
     Route::resource('todos', TodoController::class);
-    Route::get('/download-sqlite', [DatabaseController::class, 'downloadSqlite'])->name('download.sqlite');
 });
 
 require __DIR__.'/auth.php';
