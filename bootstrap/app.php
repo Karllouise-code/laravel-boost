@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
+
+        $middleware->alias([
+            'board.access' => \App\Http\Middleware\EnsureBoardAccess::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
