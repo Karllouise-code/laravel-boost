@@ -38,7 +38,7 @@
                     </svg>
                 </button>
                 <Link
-                    :href="route('todos.edit', todo.id)"
+                    :href="route('todos.edit', [props.boardSlug, todo.id])"
                     class="p-1.5 rounded-md transition-all"
                     style="color:var(--color-text-muted);"
                 >
@@ -111,6 +111,7 @@ import { Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
     todo: Object,
+    boardSlug: String,
 });
 
 const emit = defineEmits(['delete']);
@@ -148,7 +149,7 @@ const priorityText = (priority) => {
 };
 
 const toggleComplete = () => {
-    router.patch(route('todos.update', props.todo.id), {
+    router.patch(route('todos.update', [props.boardSlug, props.todo.id]), {
         completed: !props.todo.completed
     }, {
         preserveState: true,

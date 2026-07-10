@@ -2,16 +2,16 @@
     <AuthenticatedLayout>
         <div class="container mx-auto px-4 py-8 max-w-2xl">
             <div class="mb-8">
-                <Link :href="route('todos.index')" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
+                <Link :href="route('boards.show', board.slug)" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
-                    Back to Todos
+                    Back to {{ board.name }}
                 </Link>
                 <div class="flex items-center justify-between">
                     <h1 class="text-3xl font-bold" style="color:var(--color-text-primary);">Todo Details</h1>
                     <div class="flex items-center space-x-2">
-                        <Link :href="route('todos.edit', todo.id)" class="px-4 py-2 rounded-lg transition-colors inline-flex items-center"
+                        <Link :href="route('todos.edit', [board.slug, todo.id])" class="px-4 py-2 rounded-lg transition-colors inline-flex items-center"
                             :style="{background:'var(--color-accent-bg)', color:'var(--color-accent)'}">
                             <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -134,6 +134,7 @@ import { toast } from 'vue-sonner';
 import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
+    board: Object,
     todo: Object,
 });
 
@@ -179,7 +180,7 @@ const priorityText = (priority) => {
 };
 
 const toggleComplete = () => {
-    router.patch(route('todos.update', props.todo.id), {
+    router.patch(route('todos.update', [props.board.slug, props.todo.id]), {
         completed: !props.todo.completed
     });
 };
@@ -193,7 +194,7 @@ const deleteTodo = async () => {
         confirmText: 'Delete',
     });
     if (confirmed) {
-        router.delete(route('todos.destroy', props.todo.id));
+        router.delete(route('todos.destroy', [props.board.slug, props.todo.id]));
     }
 };
 </script>

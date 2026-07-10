@@ -2,11 +2,11 @@
     <AuthenticatedLayout>
         <div class="container mx-auto px-4 py-8 max-w-2xl">
             <div class="mb-8">
-                <Link :href="route('todos.index')" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
+                <Link :href="route('boards.show', board.slug)" class="inline-flex items-center mb-4 transition-colors" style="color:var(--color-text-muted);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
-                    Back to Todos
+                    Back to {{ board.name }}
                 </Link>
                 <h1 class="text-3xl font-bold" style="color:var(--color-text-primary);">Edit Todo</h1>
                 <p class="mt-2" style="color:var(--color-text-secondary);">Update your task details</p>
@@ -124,7 +124,7 @@
 
                     <div class="flex items-center justify-end space-x-4 pt-6 border-t" :style="{borderColor:'var(--color-border)'}">
                         <Link
-                            :href="route('todos.index')"
+                            :href="route('boards.show', board.slug)"
                             class="px-6 py-3 border rounded-lg transition-colors"
                             :style="{
                                 color: 'var(--color-text-secondary)',
@@ -164,6 +164,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Link, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
+    board: Object,
     todo: Object,
 });
 
@@ -183,6 +184,6 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.patch(route('todos.update', props.todo.id));
+    form.patch(route('todos.update', [props.board.slug, props.todo.id]));
 };
 </script>
