@@ -8,9 +8,7 @@ class DestroyTodoRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        $todo = $this->route('todo');
-
-        return $todo && $this->user()->id === $todo->user_id;
+        return true;
     }
 
     public function rules(): array

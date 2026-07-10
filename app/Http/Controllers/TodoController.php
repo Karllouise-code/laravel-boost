@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DestroyTodoRequest;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Models\Board;
 use App\Models\Todo;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -12,91 +13,61 @@ use Inertia\Response;
 
 class TodoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(): Response
+    public function create(string $slug): Response
     {
-        $todos = auth()->user()->todos()
-            ->orderBy('priority', 'desc')
-            ->orderBy('due_date', 'asc')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $board = Board::where('slug', $slug)->firstOrFail();
 
-        return Inertia::render('Todos/Index', [
-            'todos' => $todos,
+        return Inertia::render('Todos/Create', [
+            'board' => $board,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): Response
+    public function store(StoreTodoRequest $request, string $slug): RedirectResponse
     {
-        return Inertia::render('Todos/Create');
-    }
+        $board = Board::where('slug', $slug)->firstOrFail();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTodoRequest $request): RedirectResponse
-    {
-        $request->user()->todos()->create($request->validated());
+        $board->todos()->create($request->validated());
 
         return redirect()
-            ->route('todos.index')
+            ->route('boards.show', $slug)
             ->with('message', 'Todo created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo): Response
+    public function show(string $slug, Todo $todo): Response
     {
-        if ($todo->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $board = Board::where('slug', $slug)->firstOrFail();
 
         return Inertia::render('Todos/Show', [
+            'board' => $board,
             'todo' => $todo,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Todo $todo): Response
+    public function edit(string $slug, Todo $todo): Response
     {
-        if ($todo->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $board = Board::where('slug', $slug)->firstOrFail();
 
         return Inertia::render('Todos/Edit', [
+            'board' => $board,
             'todo' => $todo,
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTodoRequest $request, Todo $todo): RedirectResponse
+    public function update(UpdateTodoRequest $request, string $slug, Todo $todo): RedirectResponse
     {
         $todo->update($request->validated());
 
         return redirect()
-            ->route('todos.index')
+            ->route('boards.show', $slug)
             ->with('message', 'Todo updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DestroyTodoRequest $request, Todo $todo): RedirectResponse
+    public function destroy(DestroyTodoRequest $request, string $slug, Todo $todo): RedirectResponse
     {
         $todo->delete();
 
         return redirect()
-            ->route('todos.index')
+            ->route('boards.show', $slug)
             ->with('message', 'Todo deleted successfully!');
     }
 }
