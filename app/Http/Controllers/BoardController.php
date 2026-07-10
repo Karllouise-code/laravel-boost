@@ -17,7 +17,11 @@ class BoardController extends Controller
     public function index(): Response
     {
         $user = auth()->user();
-        $boards = $user->allBoards();
+
+        $owned = $user->ownedBoards()->withCount('todos')->get();
+        $collaborated = $user->collaboratedBoards()->withCount('todos')->get();
+
+        $boards = $owned->merge($collaborated)->unique('id');
 
         return Inertia::render('Boards/Index', [
             'boards' => $boards,
