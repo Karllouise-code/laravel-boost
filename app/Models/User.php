@@ -35,11 +35,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     public function ownedBoards(): HasMany
     {
         return $this->hasMany(Board::class, 'owner_id');
@@ -55,6 +50,11 @@ class User extends Authenticatable
         return $this->ownedBoards->merge($this->collaboratedBoards)->unique('id');
     }
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
