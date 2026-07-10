@@ -18,12 +18,12 @@ class Todo extends Model
         'priority',
         'due_date',
         'status',
-        'user_id',
+        'board_id',
     ];
 
-    public function user(): BelongsTo
+    public function board(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Board::class);
     }
 
     protected function casts(): array

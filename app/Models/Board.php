@@ -23,9 +23,9 @@ class Board extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function users(): BelongsToMany
+    public function collaborators(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class, 'board_user')->withTimestamps();
     }
 
     public function todos(): HasMany

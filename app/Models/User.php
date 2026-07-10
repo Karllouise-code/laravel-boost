@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -39,9 +40,19 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    public function todos(): HasMany
+    public function ownedBoards(): HasMany
     {
-        return $this->hasMany(Todo::class);
+        return $this->hasMany(Board::class, 'owner_id');
+    }
+
+    public function collaboratedBoards(): BelongsToMany
+    {
+        return $this->belongsToMany(Board::class, 'board_user')->withTimestamps();
+    }
+
+    public function allBoards()
+    {
+        return $this->ownedBoards->merge($this->collaboratedBoards)->unique('id');
     }
 
     protected function casts(): array
