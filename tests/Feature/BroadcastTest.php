@@ -86,4 +86,53 @@ class BroadcastTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoReordered($todo));
         $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoDeleted($todo->id, $board->slug));
     }
+
+    public function test_reorder_dispatches_event()
+    {
+        $user = User::factory()->create();
+        $board = Board::factory()->create(['owner_id' => $user->id]);
+        $board->collaborators()->attach($user->id);
+        $todo = Todo::factory()->create(['board_id' => $board->id, 'status' => 'todo', 'priority' => 1]);
+
+        $response = $this->actingAs($user)
+            ->patchJson(route('todos.reorder', $board->slug), [
+                'todo_id' => $todo->id,
+                'status' => 'done',
+                'priority' => 3,
+            ]);
+
+        $response->assertOk();
+        $this->assertEquals('done', $todo->fresh()->status);
+        $this->assertEquals(3, $todo->fresh()->priority);
+    }
+
+    public function test_reorder_validates_required_fields()
+    {
+        $user = User::factory()->create();
+        $board = Board::factory()->create(['owner_id' => $user->id]);
+        $board->collaborators()->attach($user->id);
+
+        $response = $this->actingAs($user)
+            ->patchJson(route('todos.reorder', $board->slug), []);
+
+        $response->assertUnprocessable();
+    }
+
+    public function test_user_cannot_reorder_todo_on_board_they_have_no_access_to()
+    {
+        $owner = User::factory()->create();
+        $stranger = User::factory()->create();
+        $board = Board::factory()->create(['owner_id' => $owner->id]);
+        $board->collaborators()->attach($owner->id);
+        $todo = Todo::factory()->create(['board_id' => $board->id]);
+
+        $response = $this->actingAs($stranger)
+            ->patchJson(route('todos.reorder', $board->slug), [
+                'todo_id' => $todo->id,
+                'status' => 'done',
+                'priority' => 1,
+            ]);
+
+        $response->assertForbidden();
+    }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SharedBoardController;
 use App\Http\Controllers\TodoController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::redirect('/', '/login');
 
@@ -42,6 +41,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('board.access')->name('todos.create');
     Route::post('/boards/{slug}/todos', [TodoController::class, 'store'])
         ->middleware('board.access')->name('todos.store');
+    Route::patch('/boards/{slug}/todos/reorder', [TodoController::class, 'reorder'])
+        ->middleware('board.access')->name('todos.reorder');
     Route::get('/boards/{slug}/todos/{todo}', [TodoController::class, 'show'])
         ->middleware('board.access')->name('todos.show');
     Route::get('/boards/{slug}/todos/{todo}/edit', [TodoController::class, 'edit'])
