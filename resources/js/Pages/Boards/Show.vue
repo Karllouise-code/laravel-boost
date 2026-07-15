@@ -51,6 +51,21 @@
                 </div>
             </div>
 
+            <!-- Online Collaborators -->
+            <div v-if="onlineUsers.length > 0" class="flex items-center gap-2 mb-4">
+                <span class="text-xs font-medium" style="color:var(--color-text-muted);">Online:</span>
+                <div class="flex -space-x-2">
+                    <div v-for="user in onlineUsers" :key="user.id"
+                        class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white relative"
+                        :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)' }"
+                        :title="user.name">
+                        {{ user.name.charAt(0).toUpperCase() }}
+                        <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
+                    </div>
+                </div>
+                <span class="text-xs" style="color:var(--color-text-muted);">{{ onlineUsers.length }} online</span>
+            </div>
+
             <!-- Kanban Board -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- To Do Column -->
@@ -141,7 +156,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import draggable from 'vuedraggable';
 import KanbanCard from '@/Components/KanbanCard.vue';
@@ -163,6 +178,77 @@ watch(() => page.props.flash?.message, (msg) => {
 const todoTasks = ref(props.todos.filter(todo => todo.status === 'todo'));
 const inProgressTasks = ref(props.todos.filter(todo => todo.status === 'in_progress'));
 const doneTasks = ref(props.todos.filter(todo => todo.status === 'done'));
+const onlineUsers = ref([]);
+
+let echoChannel = null;
+let echoPresence = null;
+
+onMounted(() => {
+    if (window.Echo) {
+        echoChannel = window.Echo.private(`board.${props.board.slug}`)
+            .listen('.TodoCreated', (e) => {
+                if (!todoTasks.value.find(t => t.id === e.id) &&
+                    !inProgressTasks.value.find(t => t.id === e.id) &&
+                    !doneTasks.value.find(t => t.id === e.id)) {
+                    const column = e.status === 'todo' ? todoTasks :
+                                   e.status === 'in_progress' ? inProgressTasks : doneTasks;
+                    column.value.push(e);
+                    toast.info(`New todo added: ${e.title}`);
+                }
+            })
+            .listen('.TodoUpdated', (e) => {
+                for (const col of [todoTasks, inProgressTasks, doneTasks]) {
+                    const idx = col.value.findIndex(t => t.id === e.id);
+                    if (idx !== -1) {
+                        col.value[idx] = e;
+                        break;
+                    }
+                }
+            })
+            .listen('.TodoDeleted', (e) => {
+                todoTasks.value = todoTasks.value.filter(t => t.id !== e.id);
+                inProgressTasks.value = inProgressTasks.value.filter(t => t.id !== e.id);
+                doneTasks.value = doneTasks.value.filter(t => t.id !== e.id);
+                toast.info('A todo was deleted');
+            })
+            .listen('.TodoReordered', (e) => {
+                for (const col of [todoTasks, inProgressTasks, doneTasks]) {
+                    const idx = col.value.findIndex(t => t.id === e.id);
+                    if (idx !== -1) {
+                        col.value.splice(idx, 1);
+                        break;
+                    }
+                }
+                const targetCol = e.status === 'todo' ? todoTasks :
+                                  e.status === 'in_progress' ? inProgressTasks : doneTasks;
+                targetCol.value.push({ ...e, status: e.status, priority: e.priority });
+            });
+
+        echoPresence = window.Echo.join(`presence-board.${props.board.slug}`)
+            .here((users) => {
+                onlineUsers.value = users;
+            })
+            .joining((user) => {
+                if (!onlineUsers.value.find(u => u.id === user.id)) {
+                    onlineUsers.value.push(user);
+                    toast.info(`${user.name} joined the board`);
+                }
+            })
+            .leaving((user) => {
+                onlineUsers.value = onlineUsers.value.filter(u => u.id !== user.id);
+                toast.info(`${user.name} left the board`);
+            });
+    }
+});
+
+onUnmounted(() => {
+    if (echoChannel) {
+        window.Echo.leave(`board.${props.board.slug}`);
+    }
+    if (echoPresence) {
+        window.Echo.leave(`presence-board.${props.board.slug}`);
+    }
+});
 
 const todoCount = computed(() => todoTasks.value.length);
 const inProgressCount = computed(() => inProgressTasks.value.length);
@@ -181,8 +267,17 @@ const onDragChange = (evt) => {
     if (evt.added) {
         const todo = evt.added.element;
         const newStatus = getStatusFromColumn(todo);
-        updateTodoStatus(todo.id, newStatus);
+        const columnIndex = getColumnArray(newStatus).value.indexOf(todo);
+        const priority = getColumnArray(newStatus).value.length - columnIndex;
+
+        updateTodoStatus(todo.id, newStatus, priority);
     }
+};
+
+const getColumnArray = (status) => {
+    if (status === 'todo') return todoTasks;
+    if (status === 'in_progress') return inProgressTasks;
+    return doneTasks;
 };
 
 const getStatusFromColumn = (todo) => {
@@ -192,12 +287,11 @@ const getStatusFromColumn = (todo) => {
     return 'todo';
 };
 
-const updateTodoStatus = (todoId, newStatus) => {
-    const completed = newStatus === 'done';
-
-    router.patch(route('todos.update', [props.board.slug, todoId]), {
+const updateTodoStatus = (todoId, newStatus, priority) => {
+    router.patch(route('todos.reorder', props.board.slug), {
+        todo_id: todoId,
         status: newStatus,
-        completed: completed
+        priority: priority,
     }, {
         preserveState: true,
         preserveScroll: true,
