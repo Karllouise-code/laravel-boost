@@ -88,7 +88,8 @@ class TodoController extends Controller
 
     public function reorder(ReorderTodoRequest $request, string $slug): JsonResponse
     {
-        $todo = Todo::findOrFail($request->validated('todo_id'));
+        $board = Board::where('slug', $slug)->firstOrFail();
+        $todo = $board->todos()->findOrFail($request->validated('todo_id'));
 
         $todo->update([
             'status' => $request->validated('status'),
