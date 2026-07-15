@@ -212,6 +212,11 @@ onMounted(() => {
                 toast.info('A todo was deleted');
             })
             .listen('.TodoReordered', (e) => {
+                const targetCol = e.status === 'todo' ? todoTasks :
+                                  e.status === 'in_progress' ? inProgressTasks : doneTasks;
+                if (targetCol.value.find(t => t.id === e.id && t.priority === e.priority)) {
+                    return;
+                }
                 for (const col of [todoTasks, inProgressTasks, doneTasks]) {
                     const idx = col.value.findIndex(t => t.id === e.id);
                     if (idx !== -1) {
@@ -219,8 +224,6 @@ onMounted(() => {
                         break;
                     }
                 }
-                const targetCol = e.status === 'todo' ? todoTasks :
-                                  e.status === 'in_progress' ? inProgressTasks : doneTasks;
                 targetCol.value.push({ ...e, status: e.status, priority: e.priority });
             });
 
