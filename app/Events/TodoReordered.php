@@ -5,11 +5,11 @@ namespace App\Events;
 use App\Models\Todo;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TodoReordered implements ShouldBroadcast
+class TodoReordered implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,11 +27,6 @@ class TodoReordered implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        return [
-            'id' => $this->todo->id,
-            'status' => $this->todo->status,
-            'priority' => $this->todo->priority,
-            'board_slug' => $this->todo->board->slug,
-        ];
+        return $this->todo->toArray();
     }
 }

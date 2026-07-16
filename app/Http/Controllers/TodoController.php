@@ -12,7 +12,6 @@ use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Board;
 use App\Models\Todo;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -86,7 +85,7 @@ class TodoController extends Controller
             ->with('message', 'Todo deleted successfully!');
     }
 
-    public function reorder(ReorderTodoRequest $request, string $slug): JsonResponse
+    public function reorder(ReorderTodoRequest $request, string $slug): RedirectResponse
     {
         $board = Board::where('slug', $slug)->firstOrFail();
         $todo = $board->todos()->findOrFail($request->validated('todo_id'));
@@ -98,6 +97,6 @@ class TodoController extends Controller
 
         TodoReordered::dispatch($todo);
 
-        return response()->json(['message' => 'Todo reordered']);
+        return back()->with('message', 'Todo reordered');
     }
 }

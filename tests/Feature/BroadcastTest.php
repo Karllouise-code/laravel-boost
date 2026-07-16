@@ -66,12 +66,7 @@ class BroadcastTest extends TestCase
 
         $channels = $event->broadcastOn();
         $this->assertEquals('private-board.'.$board->slug, $channels[0]->name);
-        $this->assertEquals([
-            'id' => $todo->id,
-            'status' => 'done',
-            'priority' => 1,
-            'board_slug' => $board->slug,
-        ], $event->broadcastWith());
+        $this->assertEquals($todo->toArray(), $event->broadcastWith());
     }
 
     public function test_events_implement_should_broadcast()
@@ -81,10 +76,10 @@ class BroadcastTest extends TestCase
         $board->collaborators()->attach($user->id);
         $todo = Todo::factory()->create(['board_id' => $board->id]);
 
-        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoCreated($todo));
-        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoUpdated($todo));
-        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoReordered($todo));
-        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcast::class, new TodoDeleted($todo->id, $board->slug));
+        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcastNow::class, new TodoCreated($todo));
+        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcastNow::class, new TodoUpdated($todo));
+        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcastNow::class, new TodoReordered($todo));
+        $this->assertInstanceOf(\Illuminate\Contracts\Broadcasting\ShouldBroadcastNow::class, new TodoDeleted($todo->id, $board->slug));
     }
 
     public function test_reorder_dispatches_event()
@@ -101,7 +96,7 @@ class BroadcastTest extends TestCase
                 'priority' => 3,
             ]);
 
-        $response->assertOk();
+        $response->assertRedirect();
         $this->assertEquals('done', $todo->fresh()->status);
         $this->assertEquals(3, $todo->fresh()->priority);
     }
