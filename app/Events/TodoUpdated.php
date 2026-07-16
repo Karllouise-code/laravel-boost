@@ -24,4 +24,9 @@ class TodoUpdated implements ShouldBroadcastNow
     {
         return 'TodoUpdated';
     }
+
+    public function broadcastWith(): array
+    {
+        return $this->todo->toArray();
+    }
 }

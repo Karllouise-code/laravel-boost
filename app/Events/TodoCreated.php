@@ -24,4 +24,9 @@ class TodoCreated implements ShouldBroadcastNow
     {
         return 'TodoCreated';
     }
+
+    public function broadcastWith(): array
+    {
+        return $this->todo->toArray();
+    }
 }
