@@ -157,6 +157,7 @@ const form = useForm({
     priority: 2,
     due_date: '',
     completed: false,
+    status: 'todo',
 });
 
 const today = computed(() => {

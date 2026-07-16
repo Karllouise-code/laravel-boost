@@ -190,8 +190,9 @@ onMounted(() => {
                 if (!todoTasks.value.find(t => t.id === e.id) &&
                     !inProgressTasks.value.find(t => t.id === e.id) &&
                     !doneTasks.value.find(t => t.id === e.id)) {
-                    const column = e.status === 'todo' ? todoTasks :
-                                   e.status === 'in_progress' ? inProgressTasks : doneTasks;
+                    const status = e.status || 'todo';
+                    const column = status === 'todo' ? todoTasks :
+                                   status === 'in_progress' ? inProgressTasks : doneTasks;
                     column.value.push(e);
                     toast.info(`New todo added: ${e.title}`);
                 }
