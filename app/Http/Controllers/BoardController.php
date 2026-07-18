@@ -38,6 +38,10 @@ class BoardController extends Controller
 
         $board->collaborators()->attach($request->user()->id);
 
+        $board->columns()->create(['name' => 'To Do', 'color' => '#6366f1', 'position' => 0]);
+        $board->columns()->create(['name' => 'In Progress', 'color' => '#f59e0b', 'position' => 1]);
+        $board->columns()->create(['name' => 'Done', 'color' => '#10b981', 'position' => 2]);
+
         return redirect()
             ->route('boards.show', $board->slug)
             ->with('message', 'Board created successfully!');
@@ -47,15 +51,17 @@ class BoardController extends Controller
     {
         $board = Board::where('slug', $slug)->firstOrFail();
 
-        $todos = $board->todos()
-            ->orderBy('priority', 'desc')
-            ->orderBy('due_date', 'asc')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $board->load(['columns' => function ($query) {
+            $query->orderBy('position');
+        }, 'columns.todos' => function ($query) {
+            $query->orderBy('priority', 'desc')
+                ->orderBy('due_date', 'asc')
+                ->orderBy('created_at', 'desc');
+        }]);
 
         return Inertia::render('Boards/Show', [
             'board' => $board->load('owner', 'collaborators'),
-            'todos' => $todos,
+            'todos' => $board->columns->flatMap->todos,
         ]);
     }
 
