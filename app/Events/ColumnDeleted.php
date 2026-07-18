@@ -5,11 +5,11 @@ namespace App\Events;
 use App\Models\Column;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ColumnDeleted implements ShouldBroadcastNow
+class ColumnDeleted implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,6 +27,6 @@ class ColumnDeleted implements ShouldBroadcastNow
 
     public function broadcastWith(): array
     {
-        return $this->column->toArray();
+        return ['id' => $this->column->id];
     }
 }
