@@ -59,6 +59,29 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
+                            <label for="column_id" class="block text-sm font-medium mb-2" style="color:var(--color-text-secondary);">
+                                Column <span style="color:var(--color-accent);">*</span>
+                            </label>
+                            <select
+                                id="column_id"
+                                v-model="form.column_id"
+                                class="w-full px-4 py-3 border rounded-lg transition-colors"
+                                :style="{
+                                    background: 'var(--color-card)',
+                                    borderColor: form.errors.column_id ? 'var(--color-accent)' : 'var(--color-border)',
+                                    color: 'var(--color-text-primary)',
+                                }"
+                            >
+                                <option v-for="col in board.columns" :key="col.id" :value="col.id">
+                                    {{ col.name }}
+                                </option>
+                            </select>
+                            <p v-if="form.errors.column_id" class="mt-2 text-sm" style="color:var(--color-accent);">
+                                {{ form.errors.column_id }}
+                            </p>
+                        </div>
+
+                        <div>
                             <label for="priority" class="block text-sm font-medium mb-2" style="color:var(--color-text-secondary);">
                                 Priority
                             </label>
@@ -157,7 +180,7 @@ const form = useForm({
     priority: 2,
     due_date: '',
     completed: false,
-    status: 'todo',
+    column_id: props.board.columns[0]?.id || null,
 });
 
 const today = computed(() => {

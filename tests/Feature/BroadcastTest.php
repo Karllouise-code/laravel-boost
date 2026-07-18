@@ -7,6 +7,7 @@ use App\Events\TodoDeleted;
 use App\Events\TodoReordered;
 use App\Events\TodoUpdated;
 use App\Models\Board;
+use App\Models\Column;
 use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -60,7 +61,7 @@ class BroadcastTest extends TestCase
         $user = User::factory()->create();
         $board = Board::factory()->create(['owner_id' => $user->id]);
         $board->collaborators()->attach($user->id);
-        $todo = Todo::factory()->create(['board_id' => $board->id, 'status' => 'done', 'priority' => 1]);
+        $todo = Todo::factory()->create(['board_id' => $board->id, 'priority' => 1]);
 
         $event = new TodoReordered($todo);
 
@@ -87,17 +88,18 @@ class BroadcastTest extends TestCase
         $user = User::factory()->create();
         $board = Board::factory()->create(['owner_id' => $user->id]);
         $board->collaborators()->attach($user->id);
-        $todo = Todo::factory()->create(['board_id' => $board->id, 'status' => 'todo', 'priority' => 1]);
+        $column = Column::factory()->create(['board_id' => $board->id]);
+        $todo = Todo::factory()->create(['board_id' => $board->id, 'column_id' => $column->id, 'priority' => 1]);
 
         $response = $this->actingAs($user)
             ->patchJson(route('todos.reorder', $board->slug), [
                 'todo_id' => $todo->id,
-                'status' => 'done',
+                'column_id' => $column->id,
                 'priority' => 3,
             ]);
 
         $response->assertRedirect();
-        $this->assertEquals('done', $todo->fresh()->status);
+        $this->assertEquals($column->id, $todo->fresh()->column_id);
         $this->assertEquals(3, $todo->fresh()->priority);
     }
 
@@ -124,7 +126,7 @@ class BroadcastTest extends TestCase
         $response = $this->actingAs($stranger)
             ->patchJson(route('todos.reorder', $board->slug), [
                 'todo_id' => $todo->id,
-                'status' => 'done',
+                'column_id' => 999,
                 'priority' => 1,
             ]);
 

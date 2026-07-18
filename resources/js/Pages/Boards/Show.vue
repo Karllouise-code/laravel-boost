@@ -67,87 +67,45 @@
             </div>
 
             <!-- Kanban Board -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- To Do Column -->
-                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
-                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
-                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-todo);"></div>
-                                To Do
-                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
-                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ todoTasks.length }}</span>
-                            </h3>
-                        </div>
-                    </div>
+            <div class="flex gap-6 overflow-x-auto pb-4">
+                <div
+                    v-for="column in board.columns"
+                    :key="column.id"
+                    class="min-w-[280px] max-w-[320px] flex-shrink-0 rounded-xl border group"
+                    :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }"
+                >
+                    <ColumnHeader
+                        :column="column"
+                        :todo-count="getColumnTodos(column.id).length"
+                        :can-delete="board.columns.length > 1"
+                        @update="updateColumn"
+                        @delete="deleteColumn"
+                    />
                     <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable v-model="todoTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200"
-                            ghost-class="drag-ghost" drag-class="dragging"
-                            :force-fallback="true" fallback-class="drag-fallback">
+                        <draggable
+                            :model-value="getColumnTodos(column.id)"
+                            @update:model-value="(val) => updateColumnTodos(column.id, val)"
+                            group="todos"
+                            @change="(evt) => onDragChange(evt, column.id)"
+                            item-key="id"
+                            class="space-y-3 min-h-[150px]"
+                            :animation="200"
+                            ghost-class="drag-ghost"
+                            drag-class="dragging"
+                            :force-fallback="true"
+                            fallback-class="drag-fallback"
+                        >
                             <template #item="{ element }">
                                 <KanbanCard :todo="element" :board-slug="board.slug" @delete="deleteTodo" />
                             </template>
                         </draggable>
-                        <div v-if="todoTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
+                        <div v-if="getColumnTodos(column.id).length === 0" class="text-center py-8" style="color: var(--color-text-dim);">
                             <p class="text-sm">Drop todos here</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- In Progress Column -->
-                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
-                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
-                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-progress);"></div>
-                                In Progress
-                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
-                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ inProgressTasks.length }}</span>
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable v-model="inProgressTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200"
-                            ghost-class="drag-ghost" drag-class="dragging"
-                            :force-fallback="true" fallback-class="drag-fallback">
-                            <template #item="{ element }">
-                                <KanbanCard :todo="element" :board-slug="board.slug" @delete="deleteTodo" />
-                            </template>
-                        </draggable>
-                        <div v-if="inProgressTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
-                            <p class="text-sm">Drop todos here</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Done Column -->
-                <div class="rounded-xl border" :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }">
-                    <div class="p-4 border-b" :style="{ borderColor: 'var(--color-border)' }">
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-semibold flex items-center" style="color:var(--color-text-primary);">
-                                <div class="w-3 h-3 rounded-full mr-2" style="background:var(--color-dot-done);"></div>
-                                Done
-                                <span class="ml-2 text-xs px-2 py-1 rounded-full"
-                                    :style="{ background: 'var(--color-accent-bg)', color: 'var(--color-accent)' }">{{ doneTasks.length }}</span>
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="p-4 space-y-3 min-h-[200px]">
-                        <draggable v-model="doneTasks" group="todos" @change="onDragChange" item-key="id"
-                            class="space-y-3 min-h-[150px]" :animation="200"
-                            ghost-class="drag-ghost" drag-class="dragging"
-                            :force-fallback="true" fallback-class="drag-fallback">
-                            <template #item="{ element }">
-                                <KanbanCard :todo="element" :board-slug="board.slug" @delete="deleteTodo" />
-                            </template>
-                        </draggable>
-                        <div v-if="doneTasks.length === 0" class="text-center py-8" style="color:var(--color-text-dim);">
-                            <p class="text-sm">Drop todos here</p>
-                        </div>
-                    </div>
-                </div>
+                <AddColumnButton v-if="board.columns.length < 10" @add="addColumn" />
             </div>
         </div>
     </AuthenticatedLayout>
@@ -160,6 +118,8 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import draggable from 'vuedraggable';
 import KanbanCard from '@/Components/KanbanCard.vue';
+import ColumnHeader from '@/Components/ColumnHeader.vue';
+import AddColumnButton from '@/Components/AddColumnButton.vue';
 import ShareModal from '@/Components/ShareModal.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { toast } from 'vue-sonner';
@@ -175,9 +135,24 @@ watch(() => page.props.flash?.message, (msg) => {
     if (msg) toast.success(msg);
 }, { immediate: true });
 
-const todoTasks = ref(props.todos.filter(todo => todo.status === 'todo'));
-const inProgressTasks = ref(props.todos.filter(todo => todo.status === 'in_progress'));
-const doneTasks = ref(props.todos.filter(todo => todo.status === 'done'));
+const todosByColumn = ref({});
+const initTodosByColumn = () => {
+    const grouped = {};
+    props.board.columns.forEach(col => {
+        grouped[col.id] = props.todos.filter(t => t.column_id === col.id);
+    });
+    todosByColumn.value = grouped;
+};
+initTodosByColumn();
+
+const getColumnTodos = (columnId) => {
+    return todosByColumn.value[columnId] || [];
+};
+
+const updateColumnTodos = (columnId, val) => {
+    todosByColumn.value[columnId] = val;
+};
+
 const onlineUsers = ref([]);
 
 let echoChannel = null;
@@ -187,45 +162,74 @@ onMounted(() => {
     if (window.Echo) {
         echoChannel = window.Echo.private(`board.${props.board.slug}`)
             .listen('.TodoCreated', (e) => {
-                if (!todoTasks.value.find(t => t.id === e.id) &&
-                    !inProgressTasks.value.find(t => t.id === e.id) &&
-                    !doneTasks.value.find(t => t.id === e.id)) {
-                    const status = e.status || 'todo';
-                    const column = status === 'todo' ? todoTasks :
-                                   status === 'in_progress' ? inProgressTasks : doneTasks;
-                    column.value.push(e);
+                const allTodos = Object.values(todosByColumn.value).flat();
+                if (!allTodos.find(t => t.id === e.id)) {
+                    const colId = e.column_id || props.board.columns[0]?.id;
+                    if (colId && todosByColumn.value[colId]) {
+                        todosByColumn.value[colId].push(e);
+                    }
                     toast.info(`New todo added: ${e.title}`);
                 }
             })
             .listen('.TodoUpdated', (e) => {
-                for (const col of [todoTasks, inProgressTasks, doneTasks]) {
-                    const idx = col.value.findIndex(t => t.id === e.id);
+                for (const colId in todosByColumn.value) {
+                    const idx = todosByColumn.value[colId].findIndex(t => t.id === e.id);
                     if (idx !== -1) {
-                        col.value[idx] = e;
+                        if (e.column_id && e.column_id != colId) {
+                            todosByColumn.value[colId].splice(idx, 1);
+                            if (todosByColumn.value[e.column_id]) {
+                                todosByColumn.value[e.column_id].push(e);
+                            }
+                        } else {
+                            todosByColumn.value[colId][idx] = e;
+                        }
                         break;
                     }
                 }
             })
             .listen('.TodoDeleted', (e) => {
-                todoTasks.value = todoTasks.value.filter(t => t.id !== e.id);
-                inProgressTasks.value = inProgressTasks.value.filter(t => t.id !== e.id);
-                doneTasks.value = doneTasks.value.filter(t => t.id !== e.id);
+                for (const colId in todosByColumn.value) {
+                    todosByColumn.value[colId] = todosByColumn.value[colId].filter(t => t.id !== e.id);
+                }
                 toast.info('A todo was deleted');
             })
             .listen('.TodoReordered', (e) => {
-                const targetCol = e.status === 'todo' ? todoTasks :
-                                  e.status === 'in_progress' ? inProgressTasks : doneTasks;
-                if (targetCol.value.find(t => t.id === e.id && t.priority === e.priority)) {
-                    return;
-                }
-                for (const col of [todoTasks, inProgressTasks, doneTasks]) {
-                    const idx = col.value.findIndex(t => t.id === e.id);
+                for (const colId in todosByColumn.value) {
+                    const idx = todosByColumn.value[colId].findIndex(t => t.id === e.id);
                     if (idx !== -1) {
-                        col.value.splice(idx, 1);
+                        todosByColumn.value[colId].splice(idx, 1);
                         break;
                     }
                 }
-                targetCol.value.push({ ...e, status: e.status, priority: e.priority });
+                const targetColId = e.column_id;
+                if (targetColId && todosByColumn.value[targetColId]) {
+                    todosByColumn.value[targetColId].push({ ...e, column_id: targetColId });
+                }
+            })
+            .listen('.ColumnCreated', (e) => {
+                if (!props.board.columns.find(c => c.id === e.id)) {
+                    props.board.columns.push(e);
+                    todosByColumn.value[e.id] = [];
+                    toast.info(`New column added: ${e.name}`);
+                }
+            })
+            .listen('.ColumnUpdated', (e) => {
+                const idx = props.board.columns.findIndex(c => c.id === e.id);
+                if (idx !== -1) {
+                    props.board.columns[idx] = { ...props.board.columns[idx], ...e };
+                }
+            })
+            .listen('.ColumnDeleted', (e) => {
+                props.board.columns = props.board.columns.filter(c => c.id !== e.id);
+                delete todosByColumn.value[e.id];
+                toast.info('A column was deleted');
+            })
+            .listen('.ColumnsReordered', (e) => {
+                e.columns.forEach(({ id, position }) => {
+                    const col = props.board.columns.find(c => c.id === id);
+                    if (col) col.position = position;
+                });
+                props.board.columns.sort((a, b) => a.position - b.position);
             });
 
         echoPresence = window.Echo.join(`presence-board.${props.board.slug}`)
@@ -246,57 +250,61 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    if (echoChannel) {
-        window.Echo.leave(`board.${props.board.slug}`);
-    }
-    if (echoPresence) {
-        window.Echo.leave(`presence-board.${props.board.slug}`);
-    }
+    if (echoChannel) window.Echo.leave(`board.${props.board.slug}`);
+    if (echoPresence) window.Echo.leave(`presence-board.${props.board.slug}`);
 });
 
-const todoCount = computed(() => todoTasks.value.length);
-const inProgressCount = computed(() => inProgressTasks.value.length);
-const doneCount = computed(() => doneTasks.value.length);
+const allTodos = computed(() => Object.values(todosByColumn.value).flat());
 
 const stats = computed(() => [
-    { label: 'Total', count: props.todos.length },
-    { label: 'To Do', count: todoCount.value },
-    { label: 'In Progress', count: inProgressCount.value },
-    { label: 'Done', count: doneCount.value },
+    { label: 'Total', count: allTodos.value.length },
+    ...props.board.columns.map(col => ({
+        label: col.name,
+        count: (todosByColumn.value[col.id] || []).length,
+    })),
 ]);
 
 const showShareModal = ref(false);
 
-const onDragChange = (evt) => {
+const onDragChange = (evt, columnId) => {
     if (evt.added) {
         const todo = evt.added.element;
-        const newStatus = getStatusFromColumn(todo);
-        const columnIndex = getColumnArray(newStatus).value.indexOf(todo);
-        const priority = getColumnArray(newStatus).value.length - columnIndex;
+        const todos = todosByColumn.value[columnId];
+        const columnIndex = todos.indexOf(todo);
+        const priority = todos.length - columnIndex;
 
-        updateTodoStatus(todo.id, newStatus, priority);
+        updateTodoStatus(todo.id, columnId, priority);
     }
 };
 
-const getColumnArray = (status) => {
-    if (status === 'todo') return todoTasks;
-    if (status === 'in_progress') return inProgressTasks;
-    return doneTasks;
-};
-
-const getStatusFromColumn = (todo) => {
-    if (todoTasks.value.includes(todo)) return 'todo';
-    if (inProgressTasks.value.includes(todo)) return 'in_progress';
-    if (doneTasks.value.includes(todo)) return 'done';
-    return 'todo';
-};
-
-const updateTodoStatus = (todoId, newStatus, priority) => {
+const updateTodoStatus = (todoId, columnId, priority) => {
     router.patch(route('todos.reorder', props.board.slug), {
         todo_id: todoId,
-        status: newStatus,
+        column_id: columnId,
         priority: priority,
     }, {
+        preserveState: true,
+        preserveScroll: true,
+    });
+};
+
+const addColumn = async (data) => {
+    router.post(route('columns.store', props.board.slug), data, {
+        preserveState: true,
+        preserveScroll: true,
+    });
+};
+
+const updateColumn = async (column, data) => {
+    router.patch(route('columns.update', [props.board.slug, column.id]), data, {
+        preserveState: true,
+        preserveScroll: true,
+    });
+};
+
+const deleteColumn = async (column) => {
+    if (!confirm(`Delete "${column.name}"? Todos will be moved to another column.`)) return;
+    router.delete(route('columns.destroy', [props.board.slug, column.id]), {
         preserveState: true,
         preserveScroll: true,
     });
@@ -313,9 +321,9 @@ const deleteTodo = async (todo) => {
     if (confirmed) {
         router.delete(route('todos.destroy', [props.board.slug, todo.id]), {
             onSuccess: () => {
-                todoTasks.value = todoTasks.value.filter(t => t.id !== todo.id);
-                inProgressTasks.value = inProgressTasks.value.filter(t => t.id !== todo.id);
-                doneTasks.value = doneTasks.value.filter(t => t.id !== todo.id);
+                for (const colId in todosByColumn.value) {
+                    todosByColumn.value[colId] = todosByColumn.value[colId].filter(t => t.id !== todo.id);
+                }
             }
         });
     }

@@ -19,7 +19,7 @@ class StoreTodoRequest extends FormRequest
             'completed' => ['boolean'],
             'priority' => ['integer', 'between:1,5'],
             'due_date' => ['nullable', 'date', 'after_or_equal:today'],
-            'status' => ['in:todo,in_progress,done'],
+            'column_id' => ['required', 'exists:columns,id'],
         ];
     }
 }

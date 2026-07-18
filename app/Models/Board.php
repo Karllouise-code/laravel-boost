@@ -33,4 +33,9 @@ class Board extends Model
     {
         return $this->hasMany(Todo::class);
     }
+
+    public function columns(): HasMany
+    {
+        return $this->hasMany(Column::class)->orderBy('position');
+    }
 }

@@ -23,7 +23,7 @@ class TodoController extends Controller
         $board = Board::where('slug', $slug)->firstOrFail();
 
         return Inertia::render('Todos/Create', [
-            'board' => $board,
+            'board' => $board->load('columns'),
         ]);
     }
 
@@ -91,7 +91,7 @@ class TodoController extends Controller
         $todo = $board->todos()->findOrFail($request->validated('todo_id'));
 
         $todo->update([
-            'status' => $request->validated('status'),
+            'column_id' => $request->validated('column_id'),
             'priority' => $request->validated('priority'),
         ]);
 

@@ -17,13 +17,18 @@ class Todo extends Model
         'completed',
         'priority',
         'due_date',
-        'status',
+        'column_id',
         'board_id',
     ];
 
     public function board(): BelongsTo
     {
         return $this->belongsTo(Board::class);
+    }
+
+    public function column(): BelongsTo
+    {
+        return $this->belongsTo(Column::class);
     }
 
     protected function casts(): array

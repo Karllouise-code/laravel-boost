@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Board;
+use App\Models\Column;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,6 +25,7 @@ class TodoFactory extends Factory
             'priority' => fake()->numberBetween(1, 5),
             'due_date' => fake()->optional(0.6)->dateTimeBetween('today', '+30 days'),
             'board_id' => Board::factory(),
+            'column_id' => Column::factory(),
         ];
     }
 }

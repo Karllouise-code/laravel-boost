@@ -15,7 +15,7 @@ class ReorderTodoRequest extends FormRequest
     {
         return [
             'todo_id' => 'required|integer|exists:todos,id',
-            'status' => 'required|string|in:todo,in_progress,done',
+            'column_id' => 'required|exists:columns,id',
             'priority' => 'required|integer|min:1',
         ];
     }

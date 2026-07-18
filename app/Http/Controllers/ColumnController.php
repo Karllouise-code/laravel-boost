@@ -19,7 +19,7 @@ class ColumnController extends Controller
     public function store(StoreColumnRequest $request, string $slug): RedirectResponse
     {
         $board = Board::where('slug', $slug)->firstOrFail();
-        $maxPosition = $board->columns()->max('position') ?? -1;
+        $maxPosition = $board->columns()->max('position') ?? -1; // If there are no columns, start from -1 so the first column will have position 0
 
         $column = Column::create([
             'board_id' => $board->id,
@@ -55,7 +55,7 @@ class ColumnController extends Controller
             return back()->withErrors(['name' => 'Cannot delete the last column.']);
         }
 
-        $fallbackColumn = $board->columns()->where('id', '!=', $columnId)->orderBy('position')->first();
+        $fallbackColumn = $board->columns()->where('id', '!=', $columnId)->orderBy('position')->first(); // Get the first column that is not the one being deleted
 
         DB::transaction(function () use ($column, $fallbackColumn) {
             $column->todos()->update(['column_id' => $fallbackColumn->id]);
