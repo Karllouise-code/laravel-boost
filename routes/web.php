@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BoardController;
+use App\Http\Controllers\ColumnController;
 use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SharedBoardController;
@@ -51,6 +52,16 @@ Route::middleware('auth')->group(function () {
         ->middleware('board.access')->name('todos.update');
     Route::delete('/boards/{slug}/todos/{todo}', [TodoController::class, 'destroy'])
         ->middleware('board.access')->name('todos.destroy');
+
+    // Columns (scoped under board)
+    Route::patch('/boards/{slug}/columns/reorder', [ColumnController::class, 'reorder'])
+        ->middleware('board.access')->name('columns.reorder');
+    Route::post('/boards/{slug}/columns', [ColumnController::class, 'store'])
+        ->middleware('board.access')->name('columns.store');
+    Route::patch('/boards/{slug}/columns/{column}', [ColumnController::class, 'update'])
+        ->middleware('board.access')->name('columns.update');
+    Route::delete('/boards/{slug}/columns/{column}', [ColumnController::class, 'destroy'])
+        ->middleware('board.access')->name('columns.destroy');
 
     // CSV export (scoped under board)
     Route::get('/boards/{slug}/todos/export', [DatabaseController::class, 'export'])
