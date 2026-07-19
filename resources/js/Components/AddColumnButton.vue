@@ -12,26 +12,30 @@
             </svg>
         </button>
 
-        <div v-else class="w-[300px]">
+        <div
+            v-else
+            class="w-[280px] rounded-lg border p-3"
+            :style="{ background: 'var(--color-card)', borderColor: 'var(--color-border)' }"
+        >
             <input
                 ref="nameInput"
                 v-model="newName"
                 placeholder="Column name"
-                class="w-full px-3 py-2 rounded-lg border text-sm mb-2"
-                :style="{ background: 'var(--color-card)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }"
+                class="w-full px-3 py-2 rounded-md border text-sm mb-2 outline-none focus:border-current"
+                :style="{ background: 'var(--color-surface)', borderColor: 'var(--color-border)', color: 'var(--color-text-primary)' }"
                 @keydown.enter="submit"
                 @keydown.escape="cancel"
             />
-            <div class="flex items-center gap-2 mb-2">
+            <div class="flex items-center gap-2 mb-3">
                 <ColorPicker v-model="newColor" />
-                <span class="text-xs" style="color: var(--color-text-muted);">Color</span>
+                <span class="text-[11px]" style="color: var(--color-text-muted);">Pick a color</span>
             </div>
             <div class="flex gap-2">
                 <button
                     @click="submit"
                     :disabled="!newName.trim()"
-                    class="px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:opacity-50"
-                    :style="{ background: 'var(--color-surface)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }"
+                    class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-all disabled:opacity-40"
+                    :style="{ background: 'var(--color-accent)', color: 'var(--color-accent-text)' }"
                 >
                     Add
                 </button>
