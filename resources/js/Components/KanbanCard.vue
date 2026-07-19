@@ -1,14 +1,14 @@
 <template>
     <div
-        class="rounded-lg p-4 border transition-colors duration-200 cursor-grab active:cursor-grabbing group select-none"
+        class="rounded-lg p-3 transition-all duration-200 cursor-grab active:cursor-grabbing group select-none hover:shadow-sm"
         :style="{
             background: 'var(--color-card)',
-            borderColor: isOverdue && !todo.completed ? 'var(--color-accent)' : 'var(--color-border)',
-            borderLeftWidth: isOverdue && !todo.completed ? '4px' : '1px',
-            opacity: todo.completed ? 0.6 : 1,
+            borderLeft: isOverdue && !todo.completed ? '3px solid var(--color-accent)' : '3px solid transparent',
+            opacity: todo.completed ? 0.5 : 1,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)',
         }"
     >
-        <div class="flex items-start justify-between mb-3">
+        <div class="flex items-start justify-between mb-2">
             <div class="flex items-center space-x-2 flex-1">
                 <span
                     v-if="todo.priority > 1"
@@ -59,7 +59,7 @@
         </div>
 
         <h3
-            class="font-semibold mb-2 leading-tight"
+            class="font-medium text-sm mb-1.5 leading-tight"
             :style="{
                 color: 'var(--color-text-primary)',
                 textDecoration: todo.completed ? 'line-through' : 'none',
@@ -97,11 +97,6 @@
             </div>
         </div>
 
-        <div class="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity" style="color:var(--color-text-dim);">
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-            </svg>
-        </div>
     </div>
 </template>
 
